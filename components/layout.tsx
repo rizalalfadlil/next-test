@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 "use client"
 import React from "react";
 import {
@@ -13,7 +14,7 @@ const navigateTo = (url: string) => {
   window.location.href = url;
 };
 
-const pages = ["menu", "users", "login", "activity", "order"];
+const pages = ["menu", "users", "login", "activity", "order", "register"];
 export default function LayoutBase({
   children,
 }: Readonly<{

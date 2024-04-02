@@ -16,6 +16,7 @@ import { z } from "zod";
 import { useState } from "react";
 import config from '../../config.json'
 import axios from "axios";
+import LayoutBase from "@/components/layout";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -59,11 +60,12 @@ export default function Login() {
     }
   }
   return (
-    <div className="grid p-4 h-screen w-screen place-items-center">
+    <LayoutBase>
+      <div className="grid p-4 h-screen w-screen place-items-center">
       <div className="md:border rounded-lg p-4 w-full md:w-1/2 xl:w-1/3">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <p className="font-semibold">Register</p>
+            <p className="font-semibold">Create new User</p>
             <FormField
               control={form.control}
               name="username"
@@ -103,9 +105,6 @@ export default function Login() {
                 </FormItem>
               )}
             />
-            <p>
-              Already have account? <a href="/login" className="font-bold">Login</a>
-            </p>
             <Button type="submit" className="w-full">
               Register
             </Button>
@@ -113,5 +112,6 @@ export default function Login() {
         </Form>
       </div>
     </div>
+    </LayoutBase>
   );
 }

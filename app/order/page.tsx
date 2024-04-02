@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 "use client"
 import LayoutBase from '@/components/layout'
 import axios from 'axios'
@@ -13,6 +14,13 @@ import {
     TableRow,
   } from "@/components/ui/table";
 import { Button } from '@/components/ui/button'
+
+const formatRupiah = (number: number) => {
+  return Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(number);
+};
 
 const navigateTo = (url: string) => {
     window.location.href = url;
@@ -56,7 +64,7 @@ export default function OrderList() {
                     <TableCell>{d?.userId}</TableCell>
                     <TableCell>{d?.pelanggan}</TableCell>
                     <TableCell>{d?.pesanan}</TableCell>
-                    <TableCell>{d?.total}</TableCell>
+                    <TableCell>{formatRupiah(parseInt(d?.total))}</TableCell>
                     <TableCell>{d?.created}</TableCell>
                     <TableCell>
                     <Button onClick={()=>navigateTo(`/order/${d.id}`)}>Lihat</Button>
