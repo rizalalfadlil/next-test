@@ -13,7 +13,7 @@ const navigateTo = (url: string) => {
   window.location.href = url;
 };
 
-const pages = ["menu", "users", "login", "activity"];
+const pages = ["menu", "users", "login", "activity", "order"];
 export default function LayoutBase({
   children,
 }: Readonly<{
