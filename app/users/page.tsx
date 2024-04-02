@@ -23,7 +23,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import axios from "axios";
-import { Trash2, FilePenLine } from "lucide-react";
+import { Trash2, FilePenLine, ScanEye, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import config from "../../config.json";
 
@@ -56,12 +56,6 @@ export default function Users() {
       console.error(e);
     }
   }
-  async function UpdateUser(
-    id: string,
-    data: { username: string; name: string }
-  ) {
-    console.log("update", id);
-  }
   useEffect(() => {
     getUsers();
   }, []);
@@ -87,7 +81,7 @@ export default function Users() {
                     <TableCell>{users?.name}</TableCell>
                     <TableCell>
                       <Button variant="ghost" onClick={()=>navigateTo(`/users/${users.id}`)}>
-                        <FilePenLine />
+                        <ScanEye />
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
@@ -116,6 +110,7 @@ export default function Users() {
             )}
           </TableBody>
         </Table>
+        <Button className="mt-4" onClick={()=>navigateTo('/register')}><Plus/></Button>
       </ScrollArea>
     </LayoutBase>
   );

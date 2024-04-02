@@ -27,6 +27,8 @@ const navigateTo = (url: string) => {
   };
 
 export default function OrderList() {
+  const userData = localStorage.getItem('user')
+  const parsedUser:{id:string, username:string, name:string, type:string} = JSON.parse(userData || '{}')
     const [data, setData] = useState([])
     const getOrderData = async ()=>{
         try{
@@ -65,7 +67,7 @@ export default function OrderList() {
                     <TableCell>{d?.pelanggan}</TableCell>
                     <TableCell>{d?.pesanan}</TableCell>
                     <TableCell>{formatRupiah(parseInt(d?.total))}</TableCell>
-                    <TableCell>{d?.created}</TableCell>
+                    <TableCell>{d?.created.slice(0, -5)}</TableCell>
                     <TableCell>
                     <Button onClick={()=>navigateTo(`/order/${d.id}`)}>Lihat</Button>
                     </TableCell>
@@ -75,7 +77,7 @@ export default function OrderList() {
             )}
           </TableBody>
         </Table>
-        <Button className='mt-4' onClick={()=>navigateTo('/order/new')}>Buat pesanan baru</Button>
+        {parsedUser.type === 'kasir' && <Button className='mt-4' onClick={()=>navigateTo('/order/new')}>Buat pesanan baru</Button>}
     </LayoutBase>
   )
 }

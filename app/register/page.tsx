@@ -14,14 +14,22 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
-import config from '../../config.json'
+import config from "../../config.json";
 import axios from "axios";
 import LayoutBase from "@/components/layout";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
   name: z.string().min(2).max(50),
-  password: z.string().min(5).max(50),
+  type: z.string().min(5),
+  password:z.string().min(2)
 });
 
 export default function Login() {
@@ -30,88 +38,120 @@ export default function Login() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
-      name:"",
-      password: "",
+      name: "",
+      type: "",
+      password:""
     },
   });
-  
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    register(values)
+    register(values);
   }
-  const register = async (data: { username: string; name: string; password: string; }) =>{
-    
-
+  const register = async (data: {
+    username: string;
+    name: string;
+    type: string;
+    password:string
+  }) => {
     const registerData = {
-        ...data,
-        'passwordConfirm': data.password
+      ...data,
+      passwordConfirm: data.password,
+    };
+    console.log("register", registerData);
+    try {
+      const res = await axios.post(
+        `${config.db}api/collections/users/records`,
+        registerData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(res);
+      window.location.href = "/users";
+    } catch (e) {
+      console.error(e);
     }
-    console.log('register', registerData)
-    try{
-        const res = await axios.post(`${config.db}api/collections/users/records`, registerData, {
-            headers:{
-                'Content-Type':'application/json'
-            }
-        })
-        console.log(res)
-
-    }catch(e){
-        console.error(e)
-    }
-  }
+  };
   return (
     <LayoutBase>
-      <div className="grid p-4 h-screen w-screen place-items-center">
-      <div className="md:border rounded-lg p-4 w-full md:w-1/2 xl:w-1/3">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <p className="font-semibold">Create new User</p>
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 w-full p-2"
+        >
+          <p className="font-semibold">Create new User</p>
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
                 control={form.control}
-                name="name"
+                name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full name</FormLabel>
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} type="password"/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tipe Akun</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <SelectTrigger>
+                      <SelectValue placeholder="pilih tipe user" />
+                    </SelectTrigger>
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full">
-              Register
-            </Button>
-          </form>
-        </Form>
-      </div>
-    </div>
+                  <SelectContent>
+                    <SelectItem value="kasir">Kasir</SelectItem>
+                    <SelectItem value="manajer">Manajer</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full">
+            Register
+          </Button>
+        </form>
+      </Form>
     </LayoutBase>
   );
 }

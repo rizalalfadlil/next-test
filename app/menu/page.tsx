@@ -144,7 +144,7 @@ export default function menu() {
   }, []);
   return (
     <LayoutBase>
-      <div className="relative h-full">
+      <div className="h-full">
         <div className="grid md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
           {data.map((d: { nama: string; harga: number, id:string, collectionId:string, foto:string }, index) => (
             <Card>
@@ -225,7 +225,7 @@ export default function menu() {
         </div>
         <Sheet>
           <SheetTrigger asChild>
-            <Button className="absolute bottom-0 w-full" onClick={()=>{setNama(''),setHarga('')}}>tambah data</Button>
+            <Button className="p-4 mt-4 w-full" onClick={()=>{setNama(''),setHarga('')}}>tambah data</Button>
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>

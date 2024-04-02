@@ -39,26 +39,27 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Label } from "@/components/ui/label";
 import { Pencil } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
   name: z.string().min(2).max(50),
-  password: z.string().min(5).max(50),
+  type:z.string(),
 });
 
 export default function ViewUser({ params }: any) {
-  const [data, setData] = useState({ id: "", username: "", name: "" });
+  const [data, setData] = useState({ id: "", username: "", name: "", type:""});
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: data.username,
       name: data.name,
+      type: data.type,
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-
     try{
         const res = await axios.patch(`${config.db}api/collections/users/records/${params.id}`, values,{
             headers:{
@@ -66,6 +67,7 @@ export default function ViewUser({ params }: any) {
             }
         })
         console.log(res)
+        window.location.href = "/users"
     }catch(e){
         console.error(e)
     }
@@ -105,6 +107,8 @@ export default function ViewUser({ params }: any) {
       <p className="text-xl font-medium mb-4">{data.username}</p>
       <p className="text-xs font-light">name</p>
       <p className="text-xl font-medium mb-8">{data.name}</p>
+      <p className="text-xs font-light">tipe</p>
+      <p className="text-xl font-medium mb-8">{data.type}</p>
       <Sheet>
         <SheetTrigger asChild>
           <Button variant="outline">Edit</Button>
@@ -122,7 +126,7 @@ export default function ViewUser({ params }: any) {
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -141,6 +145,27 @@ export default function ViewUser({ params }: any) {
                   </FormItem>
                 )}
               />
+              <FormField
+          control={form.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Tipe Akun</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="pilih tipe user" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="kasir">Kasir</SelectItem>
+                  <SelectItem value="manajer">Manajer</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}/>
               <SheetFooter>
                 <SheetClose asChild>
                   <Button type="submit" className="w-full mt-8">Simpan</Button>

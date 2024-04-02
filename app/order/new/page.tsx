@@ -31,7 +31,7 @@ const formatRupiah = (number: number) => {
 };
 
 export default function Order() {
-  const [namaPemesan, setNamaPemesan] = useState('')
+  const [namaPemesan, setNamaPemesan] = useState("");
   const [daftarMenu, setDaftarMenu] = useState<MenuItem[]>([]);
   const [pesanan, setPesanan] = useState<PesananItem[]>([]);
   const [rincianPesanan, setRincianPesanan] = useState("");
@@ -92,20 +92,30 @@ export default function Order() {
       type: string;
     } = JSON.parse(userData || "{}");
     const order = {
-      pelanggan:namaPemesan,
-      pesanan:rincianPesanan,
-      total:hitungTotalHarga(),
-      userId:parsedUser.id
-    }
-    try{
-        const res = await axios.post(`${config.db}api/collections/orders/records`, order, {
-          headers:{
-            'Content-Type':'application/json'
+      pelanggan: namaPemesan,
+      pesanan: rincianPesanan,
+      total: hitungTotalHarga(),
+      userId: parsedUser.id,
+    };
+    try {
+      const res = await axios.post(
+        `${config.db}api/collections/orders/records`,
+        order,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-        })
-        console.log('pesanan', res)
-    }catch(e){
-      console.error(e)
+      );
+      console.log("pesanan", res);
+      const res2 = await axios.post(`${config.db}api/collections/activity/records`, {log:`membuat transaksi baru : ${res.data.id}`, userId:parsedUser.id}, {
+        headers: {
+            "Content-Type": "application/json",
+          },
+      });
+      console.log(res2)
+    } catch (e) {
+      console.error(e);
     }
     setPesanan([]);
   };
@@ -116,7 +126,11 @@ export default function Order() {
       <div className="p-4 grid gap-4">
         <div>
           <Label className="text-lg pb-4">Nama pemesan</Label>
-          <Input type="text" value={namaPemesan} onChange={(e)=>setNamaPemesan(e.target.value)}/>
+          <Input
+            type="text"
+            value={namaPemesan}
+            onChange={(e) => setNamaPemesan(e.target.value)}
+          />
         </div>
         <div>
           <Label className="text-lg pb-4">Daftar menu</Label>
@@ -175,7 +189,12 @@ export default function Order() {
             Total Harga : {formatRupiah(hitungTotalHarga())}
           </Label>
         </div>
-        <Button onClick={buatPesanan} disabled={pesanan.length == 0 || namaPemesan == ''}>Buat Pesanan</Button>
+        <Button
+          onClick={buatPesanan}
+          disabled={pesanan.length == 0 || namaPemesan == ""}
+        >
+          Buat Pesanan
+        </Button>
       </div>
     </LayoutBase>
   );
