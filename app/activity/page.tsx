@@ -52,22 +52,6 @@ const navigateTo = (url: string) => {
 };
 export default function Activities() {
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState(data);
-  const [filteredDate, setFilteredDate] = useState(data);
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState("");
-  const [date, setDate] = useState<Date | undefined>(new Date());
-
-  const selectDate = (date: any) => {
-    setDate(date);
-    console.log("tanggal", dayjs(date).format(showedFormat))
-    // selectUser(selectedUser)
-    setFilteredDate(
-      filteredData.filter((d: { id: string; userId: string, created:string }) => {
-        return dayjs(d.created).format(showedFormat) === dayjs(date).format(showedFormat);
-      })
-    );
-  };
 
   const getUsers = async () => {
     try {
@@ -75,30 +59,18 @@ export default function Activities() {
         `${config.db}api/collections/users/records?page=1&perPage=30`
       );
       console.log(res);
-      setUsers(res?.data.items);
     } catch (e) {
       console.log(e);
     }
   };
 
-  const selectUser = (id: string) => {
-    setSelectedUser(selectedUser);
-    console.log("selected", id);
-    setDate(undefined)
-    setSelectedUser(id)
-    setFilteredData(
-      data.filter((d: { id: string; userId: string }) => {
-        return d.userId === id;
-      })
-    );
-  };
   const getActivities = async () => {
     try {
       const res = await axios.get(
         `${config.db}api/collections/activity/records?page=1&perPage=30`
       );
       console.log(res);
-      setData(res?.data.items);
+      setData(res?.data.items.reverse());
     } catch (e) {
       console.log(e);
     }
@@ -111,34 +83,6 @@ export default function Activities() {
   return (
     <LayoutBase>
       <p className="font-bold text-lg my-8">Daftar Aktivitas</p>
-      <div className="p-4 grid md:grid-cols-2 gap-4">
-        <Select
-          onValueChange={(e) => {
-            selectUser(e);
-          }}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="pilih user" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {users.map((m: { id: string; name: string }) => (
-                <SelectItem value={m.id}>{m.name}</SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline">
-              <CalendarSearch className="me-4" /> Pilih Tanggal
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <Calendar mode="single" selected={date} onSelect={selectDate}/>
-          </PopoverContent>
-        </Popover>
-      </div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -148,7 +92,7 @@ export default function Activities() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredDate?.map(
+            {data?.map(
               (a: { log: string; userId: string; created: string }) => {
                 return (
                   <TableRow>

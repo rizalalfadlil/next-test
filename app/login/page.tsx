@@ -103,12 +103,6 @@ export default function Login() {
                 </FormItem>
               )}
             />
-            <p>
-              Doesn't have account?{" "}
-              <a href="/register" className="font-bold">
-                Register
-              </a>
-            </p>
             <Button type="submit" className="w-full">
               Login
             </Button>

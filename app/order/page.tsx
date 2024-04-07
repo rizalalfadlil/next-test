@@ -1,5 +1,5 @@
-/* eslint-disable react/jsx-key */
 "use client";
+/* eslint-disable react/jsx-key */
 import LayoutBase from "@/components/layout";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -55,8 +55,9 @@ export default function OrderList() {
   const [data, setData] = useState([]);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [users, setUsers] = useState([]);
-  const [filterDate, setFilterDate] = useState([])
-  const [filterUser, setFilterUser] = useState([])
+  const [filterDate, setFilterDate] = useState([]);
+  const [filterUser, setFilterUser] = useState([]);
+  const [selectedUser, setSelectedUser] = useState<String>()
   const getUsers = async () => {
     try {
       const res = await axios.get(
@@ -68,8 +69,14 @@ export default function OrderList() {
       console.log(e);
     }
   };
-  const selectUser = (id: string) => {
+  const selectUser = async (id: string) => {
+    setSelectedUser(id)
     console.log("selected", id);
+    setFilterUser(
+      (filterDate?filterDate:data).filter((d: { id: string; userId: string }) => {
+        return d.userId === id;
+      })
+    );
   };
 
   const selectDate = (date: any) => {
@@ -77,16 +84,29 @@ export default function OrderList() {
     console.log("tanggal", dayjs(date).format(showedFormat));
     // selectUser(selectedUser)
     setFilterDate(
-      data.filter((d: { id: string; userId: string, created:string }) => {
-        return dayjs(d.created).format(showedFormat) === dayjs(date).format(showedFormat);
+      data.filter((d: { id: string; userId: string; created: string }) => {
+        return (
+          dayjs(d.created).format(showedFormat) ===
+          dayjs(date).format(showedFormat)
+        );
       })
-    )
+    );
+
+    setFilterUser((selectedUser?data.filter((d: { id: string; userId: string }) => {
+      return d.userId === selectedUser;
+    }):data).filter((d: { id: string; userId: string; created: string }) => {
+      return (
+        dayjs(d.created).format(showedFormat) ===
+        dayjs(date).format(showedFormat)
+      );
+    }))
   };
   const getOrderData = async () => {
     try {
       const res = await axios.get(`${config.db}api/collections/orders/records`);
       setData(res.data.items);
       setFilterDate(res.data.items);
+      setFilterUser(res.data.items)
       console.log(res.data);
     } catch (e) {
       console.error(e);
@@ -118,6 +138,11 @@ export default function OrderList() {
     });
     return formatRupiah(number);
   };
+
+  const clearFilter = () =>{
+    window.location.reload()
+    
+  }
   return (
     <LayoutBase>
       <div>OrderList</div>
@@ -133,6 +158,7 @@ export default function OrderList() {
           </PopoverContent>
         </Popover>
         <Select
+
           onValueChange={(e) => {
             selectUser(e);
           }}
@@ -148,7 +174,7 @@ export default function OrderList() {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Button variant='outline'>Hapus Filter</Button>
+        <Button variant="outline" onClick={clearFilter}>Hapus Filter</Button>
       </div>
 
       <Table>
@@ -164,7 +190,7 @@ export default function OrderList() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filterDate?.map(
+          {filterUser?.map(
             (d: {
               id: string;
               userId: string;
@@ -180,7 +206,9 @@ export default function OrderList() {
                   <TableCell>{d?.pelanggan}</TableCell>
                   <TableCell>{d?.pesanan}</TableCell>
                   <TableCell>{formatRupiah(parseInt(d?.total))}</TableCell>
-                  <TableCell>{dayjs(d?.created).format(showedFormat)}</TableCell>
+                  <TableCell>
+                    {dayjs(d?.created).format(showedFormat)}
+                  </TableCell>
                   <TableCell>
                     <Button onClick={() => navigateTo(`/order/${d.id}`)}>
                       Lihat
