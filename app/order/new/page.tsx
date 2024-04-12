@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Loading } from "@/components/Loading";
 
 interface MenuItem {
   nama: string;
@@ -32,16 +33,21 @@ const formatRupiah = (number: number) => {
 
 export default function Order() {
   const [namaPemesan, setNamaPemesan] = useState("");
+  const [loading, setLoading] = useState(false)
+  const [btnLoading, setBtnLoading] = useState(false)
   const [daftarMenu, setDaftarMenu] = useState<MenuItem[]>([]);
   const [pesanan, setPesanan] = useState<PesananItem[]>([]);
   const [rincianPesanan, setRincianPesanan] = useState("");
 
   const getMenu = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(`${config.db}api/collections/menu/records?`);
       setDaftarMenu(res.data.items);
     } catch (e) {
       console.error(e);
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -84,6 +90,7 @@ export default function Order() {
   };
 
   const buatPesanan = async () => {
+    
     const userData = localStorage.getItem("user");
     const parsedUser: {
       id: string;
@@ -98,6 +105,7 @@ export default function Order() {
       userId: parsedUser.id,
     };
     try {
+      setBtnLoading(true)
       const res = await axios.post(
         `${config.db}api/collections/orders/records`,
         order,
@@ -116,6 +124,8 @@ export default function Order() {
       console.log(res2)
     } catch (e) {
       console.error(e);
+    }finally{
+      setBtnLoading(false)
     }
     setPesanan([]);
   };
@@ -150,6 +160,7 @@ export default function Order() {
               </Card>
             ))}
           </div>
+          {loading && (<div className="flex my-4 justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
         </div>
         <div>
           <Label className="text-lg pb-4">Pesanan</Label>
@@ -193,7 +204,7 @@ export default function Order() {
           onClick={buatPesanan}
           disabled={pesanan.length == 0 || namaPemesan == ""}
         >
-          Buat Pesanan
+          {btnLoading? <Loading/> : "Buat Pesanan"}
         </Button>
       </div>
     </LayoutBase>

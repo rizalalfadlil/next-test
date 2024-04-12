@@ -85,7 +85,10 @@ export default function Home() {
   return (
     <LayoutBase>
       <div className="grid gap-4 ">
-        <div className="bg-slate-700 w-full h-48 rounded-lg"></div>
+        <div className="w-full h-48 rounded-lg bg-cover bg-slate-200 bg-center flex items-center" style={{backgroundImage:"url('')"}}>
+          <div className="h-full aspect-square bg-contain" style={{backgroundImage:"url('./logo.png')"}}></div>
+          <p className="text-5xl md:text-6xl ms-4 md:ms-8 font-medium tracking-wide mt-3">Bisa Ngopi</p>
+        </div>
         <p className="text-lg">
           Halo,{" "}
           <span className="font-semibold capitalize">

@@ -1,4 +1,5 @@
 "use client";
+import { Loading } from "@/components/Loading"
 import { Button } from "@/components/ui/button";
 import {
   FormField,
@@ -17,7 +18,7 @@ import { useState } from "react";
 import config from "../../config.json";
 import axios from "axios";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Loader, LoaderCircle } from "lucide-react";
 
 const formSchema = z.object({
   identity: z.string().min(2).max(50),
@@ -25,6 +26,7 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const [loading, setLoading] = useState(false)
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,6 +46,7 @@ export default function Login() {
     };
     console.log("register", registerData);
     try {
+      setLoading(true)
       const res = await axios.post(
         `${config.db}api/collections/users/auth-with-password`,
         registerData,
@@ -60,6 +63,8 @@ export default function Login() {
     } catch (e) {
       console.error(e);
       setFailedmessage(true)
+    }finally{
+      setLoading(false)
     }
   };
   return (
@@ -104,7 +109,7 @@ export default function Login() {
               )}
             />
             <Button type="submit" className="w-full">
-              Login
+              {loading? <Loading/> : "Login"}
             </Button>
           </form>
         </Form>

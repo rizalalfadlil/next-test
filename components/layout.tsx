@@ -106,27 +106,27 @@ export default function LayoutBase({
   return (
     <div className="md:grid grid-cols-10">
       <div className="col-span-2 hidden md:block border-e">
-        <p className="font-semibold text-2xl my-4 px-8 pt-8 font-serif">
-          Cafe Bisa Ngopi
+        <p className="font-bold text-3xl my-4 px-4 pt-4">
+          <a href="/" className="flex justify-center items-center"><div className="size-20 bg-contain" style={{backgroundImage:"url('./logo.png')"}}></div><span className="mt-3 ms-4">Bisa Ngopi</span></a>
         </p>
-        <div className="px-8 pb-8">
+        <div className="px-4 pb-4">
           <Badge>{parsedUser.type}</Badge>
         </div>
         <Separator />
         <div className="p-4 grid gap-2">
           {navigationButtons}
-          {/* <Button
-            variant="link"
-            onClick={() => {
-              setTheme(currentTheme === "light" ? "dark" : "light");
-              setCurrentTheme(currentTheme === "light" ? "dark" : "light");
-            }}
-          >
-            {currentTheme === "light" ? <Moon /> : <Sun />}{" "}
-            <span className="ms-4">
-              {currentTheme === "light" ? "Mode gelap" : "mode Terang"}
-            </span>
-          </Button> */}
+            {/* <Button
+              variant="link"
+              onClick={() => {
+                setTheme(currentTheme === "light" ? "dark" : "light");
+                setCurrentTheme(currentTheme === "light" ? "dark" : "light");
+              }}
+            >
+              {currentTheme === "light" ? <Moon /> : <Sun />}{" "}
+              <span className="ms-4">
+                {currentTheme === "light" ? "Mode gelap" : "mode Terang"}
+              </span>
+            </Button> */}
         </div>
       </div>
       <div className="h-screen col-span-8 mt-16 md:mt-0">
@@ -179,7 +179,7 @@ export default function LayoutBase({
                 href="https://github.com/rizalalfadlil/next-test"
                 className="border-b hover:border-0"
               >
-                GitHub Repository (currently in private) →
+                GitHub Repository →
               </a>
             </p>
           </div>

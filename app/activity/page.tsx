@@ -44,6 +44,7 @@ import {
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { Loading } from "@/components/Loading";
 dayjs.extend(customParseFormat);
 dayjs.locale('id');
 const showedFormat = 'DD MMMM YYYY';
@@ -52,8 +53,10 @@ const navigateTo = (url: string) => {
 };
 export default function Activities() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   const getUsers = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(
         `${config.db}api/collections/users/records?page=1&perPage=30`
@@ -61,6 +64,8 @@ export default function Activities() {
       console.log(res);
     } catch (e) {
       console.log(e);
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -105,6 +110,7 @@ export default function Activities() {
             )}
           </TableBody>
         </Table>
+        {loading && (<div className="flex my-4 justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
     </LayoutBase>
   );
 }

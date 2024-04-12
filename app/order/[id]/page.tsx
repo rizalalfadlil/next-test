@@ -14,6 +14,7 @@ import {
   } from "@/components/ui/breadcrumb";
 import LayoutBase from '@/components/layout';
 import { Label } from '@radix-ui/react-label';
+import { Loading } from '@/components/Loading';
 
 const formatRupiah = (number: number) => {
   return Intl.NumberFormat("id-ID", {
@@ -23,9 +24,11 @@ const formatRupiah = (number: number) => {
 };
 
 export default function page({ params }: any) {
+  const [loading, setLoading] = useState(false)
     const [data, setData] = useState({ id: "", pelanggan: "", pesanan: "", total:0, userId:"", created:"" });
     const getOrder = async (id: any) => {
         try {
+          setLoading(true)
           const res = await axios.get(
             `${config.db}api/collections/orders/records/${id}`
           );
@@ -33,6 +36,8 @@ export default function page({ params }: any) {
           setData(res.data);
         } catch (e) {
           console.log(e);
+        }finally{
+          setLoading(false)
         }
       };
       useEffect(() => {
@@ -74,6 +79,7 @@ export default function page({ params }: any) {
         <p className='text-xl'>{data.created.slice(0, -5)}</p>
       </div>
       </div>
+      {loading && (<div className="flex my-4 justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
       </LayoutBase>
   )
 }

@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Loading } from "@/components/Loading";
 const showedFormat = "DD MMMM YYYY";
 
 const formatRupiah = (number: number) => {
@@ -58,7 +59,9 @@ export default function OrderList() {
   const [filterDate, setFilterDate] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
   const [selectedUser, setSelectedUser] = useState<String>()
+  const [loading, setLoading] = useState(false)
   const getUsers = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(
         `${config.db}api/collections/users/records?page=1&perPage=30`
@@ -67,6 +70,8 @@ export default function OrderList() {
       setUsers(res?.data.items);
     } catch (e) {
       console.log(e);
+    }finally{
+      setLoading(false)
     }
   };
   const selectUser = async (id: string) => {
@@ -220,6 +225,7 @@ export default function OrderList() {
           )}
         </TableBody>
       </Table>
+      {loading && (<div className="flex my-4 justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
       <div className="grid md:grid-cols-2 w-full gap-4 my-8">
         <div className="border rounded-md p-4 ">
           <p className="text-lg foont-medium">Pendapatan bulan ini</p>

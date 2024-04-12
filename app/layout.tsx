@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Quicksand } from "next/font/google";
 import { any } from "zod";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
+const quicksand = Quicksand({subsets: ["latin"]})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={quicksand.className}>
         {/* <ThemeProvider
           attribute="class"
           defaultTheme="light"

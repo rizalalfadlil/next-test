@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-key */
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import LayoutBase from "@/components/layout";
 import axios from "axios";
@@ -35,6 +37,7 @@ import {
 import { Form, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
+import { Loading } from "@/components/Loading";
 
 const formatRupiah = (number: number) => {
   return Intl.NumberFormat("id-ID", {
@@ -45,18 +48,22 @@ const formatRupiah = (number: number) => {
 
 export default function menu() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   const userData = localStorage.getItem('user')
   const parsedUser:{id:string, username:string, name:string, type:string} = JSON.parse(userData || '{}')
   console.log('user info', parsedUser? parsedUser.id : 'not login')
 
   const getMenuList = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(`${config.db}api/collections/menu/records`);
       console.log(res);
       setData(res.data.items);
     } catch (e) {
       console.error(e);
+    }finally{
+      setLoading(false)
     }
   };
   const [nama, setNama] = useState('');
@@ -151,7 +158,7 @@ export default function menu() {
               <div
                 style={{
                   backgroundImage:
-                    `url('http://127.0.0.1:8090/api/files/${d.collectionId}/${d.id}/${d.foto}?')`,
+                    `url('${config.db}api/files/${d.collectionId}/${d.id}/${d.foto}?')`,
                 }}
                 className="w-full border bg-cover bg-no-repeat bg-center h-48"
               />
@@ -223,6 +230,7 @@ export default function menu() {
             </Card>
           ))}
         </div>
+          {loading && (<div className="flex justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
         <Sheet>
           <SheetTrigger asChild>
             <Button className="p-4 mt-4 w-full" onClick={()=>{setNama(''),setHarga('')}}>tambah data</Button>

@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Loading } from "@/components/Loading";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -33,6 +34,7 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const [loading, setLoading] = useState(false)
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,6 +62,7 @@ export default function Login() {
     };
     console.log("register", registerData);
     try {
+      setLoading(true)
       const res = await axios.post(
         `${config.db}api/collections/users/records`,
         registerData,
@@ -73,6 +76,8 @@ export default function Login() {
       window.location.href = "/users";
     } catch (e) {
       console.error(e);
+    }finally{
+      setLoading(false)
     }
   };
   return (
@@ -148,7 +153,7 @@ export default function Login() {
             )}
           />
           <Button type="submit" className="w-full">
-            Register
+          {loading ? (<Loading/>) : "Register"}
           </Button>
         </form>
       </Form>

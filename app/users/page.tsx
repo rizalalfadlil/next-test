@@ -1,5 +1,7 @@
+/* eslint-disable react/jsx-key */
 "use client";
 import LayoutBase from "@/components/layout";
+import { Loading } from "@/components/Loading";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,8 +33,10 @@ const navigateTo = (url: string) => {
   window.location.href = url;
 };
 export default function Users() {
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState([]);
   const getUsers = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(
         `${config.db}api/collections/users/records?page=1&perPage=30`
@@ -41,12 +45,15 @@ export default function Users() {
       setData(res?.data.items);
     } catch (e) {
       console.log(e);
+    }finally{
+      setLoading(false)
     }
   };
 
   async function deleteUser(id: string) {
     console.log("deleting data with id ", id);
     try {
+      setLoading(true)
       const res = await axios.delete(
         `${config.db}api/collections/users/records/${id}`
       );
@@ -54,6 +61,8 @@ export default function Users() {
       getUsers();
     } catch (e) {
       console.error(e);
+    }finally{
+      setLoading(false)
     }
   }
   useEffect(() => {
@@ -98,7 +107,7 @@ export default function Users() {
                             <AlertDialogAction
                               onClick={() => deleteUser(users?.id)}
                             >
-                              Hapus
+                              {loading? <Loading/> : 'Hapus'}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
@@ -110,6 +119,7 @@ export default function Users() {
             )}
           </TableBody>
         </Table>
+        {loading && (<div className="flex my-4 justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
         <Button className="mt-4" onClick={()=>navigateTo('/register')}><Plus/></Button>
       </ScrollArea>
     </LayoutBase>
