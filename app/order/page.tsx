@@ -44,7 +44,6 @@ const formatRupiah = (number: number) => {
 const navigateTo = (url: string) => {
   window.location.href = url;
 };
-
 interface UserInterface {
   id: string;
   username: string;
