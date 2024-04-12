@@ -58,7 +58,9 @@ export default function OrderList() {
   useEffect(() => {
     const user: string = localStorage.getItem("user")!;
     setUserData(user);
-    
+    if(!parsedUser.type){
+      navigateTo('/login')
+    }
   }, []);
   const [data, setData] = useState([]);
   const [date, setDate] = useState<Date | undefined>(undefined);
