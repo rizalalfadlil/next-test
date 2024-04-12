@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { User, Activity, LogIn, Coffee, NotebookTabs } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const navigateTo = (url: string) => {
   window.location.href = url;
@@ -58,17 +59,25 @@ const kasirPage = [
   {
     title: "Log-out",
     target: "login",
-    icon: <LogIn  className="w-full size-12 my-4" />,
+    icon: <LogIn className="w-full size-12 my-4" />,
   },
 ];
+
+interface UserInterface {
+  id: string;
+  username: string;
+  name: string;
+  type: string;
+}
 export default function Home() {
-  const userData = localStorage.getItem("user");
-  const parsedUser: {
-    id: string;
-    username: string;
-    name: string;
-    type: string;
-  } = JSON.parse(userData || "{}");
+  const [userData, setUserData] = useState("");
+  const parsedUser: UserInterface = JSON.parse(userData || "{}");
+
+  
+  useEffect(() => {
+    const user: string = localStorage.getItem("user")!;
+    setUserData(user);
+  }, []);
 
   let showedPage;
   if (parsedUser.type === "admin") showedPage = adminPage;
@@ -76,18 +85,31 @@ export default function Home() {
   else showedPage = kasirPage;
 
   const menuButtons = showedPage.map((p) => (
-    <Card className="p-2 text-center grid content-center hover:cursor-pointer hover:bg-slate-200/50" onClick={()=> navigateTo(p.target)}>
+    <Card
+      className="p-2 text-center grid content-center hover:cursor-pointer hover:bg-slate-200/50"
+      onClick={() => navigateTo(p.target)}
+    >
       {p.icon}
-      <Button className="text-md" variant="link">{p.title}</Button>
+      <Button className="text-md" variant="link">
+        {p.title}
+      </Button>
     </Card>
   ));
 
   return (
     <LayoutBase>
       <div className="grid gap-4 ">
-        <div className="w-full h-48 rounded-lg bg-cover bg-slate-200 bg-center flex items-center" style={{backgroundImage:"url('')"}}>
-          <div className="h-full aspect-square bg-contain" style={{backgroundImage:"url('./logo.png')"}}></div>
-          <p className="text-5xl md:text-6xl ms-4 md:ms-8 font-medium tracking-wide mt-3">Bisa Ngopi</p>
+        <div
+          className="w-full h-48 rounded-lg bg-cover bg-slate-200 bg-center flex items-center"
+          style={{ backgroundImage: "url('')" }}
+        >
+          <div
+            className="h-full aspect-square bg-contain"
+            style={{ backgroundImage: "url('./logo.png')" }}
+          ></div>
+          <p className="text-5xl md:text-6xl ms-4 md:ms-8 font-medium tracking-wide mt-3">
+            Bisa Ngopi
+          </p>
         </div>
         <p className="text-lg">
           Halo,{" "}

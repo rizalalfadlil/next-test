@@ -1,5 +1,5 @@
 "use client";
-import { Loading } from "@/components/Loading"
+import { Loading } from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 import {
   FormField,
@@ -26,7 +26,7 @@ const formSchema = z.object({
 });
 
 export default function Login() {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,7 +46,7 @@ export default function Login() {
     };
     console.log("register", registerData);
     try {
-      setLoading(true)
+      setLoading(true);
       const res = await axios.post(
         `${config.db}api/collections/users/auth-with-password`,
         registerData,
@@ -57,14 +57,16 @@ export default function Login() {
         }
       );
       console.log(res);
-      localStorage.setItem('user', JSON.stringify(res.data.record))
-      localStorage.setItem('token', res.data.token)
-      window.location.href = '/'
+      if (typeof window !== undefined) {
+        localStorage.setItem("user", JSON.stringify(res.data.record));
+        localStorage.setItem("token", res.data.token);
+      }
+      window.location.href = "/";
     } catch (e) {
       console.error(e);
-      setFailedmessage(true)
-    }finally{
-      setLoading(false)
+      setFailedmessage(true);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -74,7 +76,10 @@ export default function Login() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <p className="font-semibold">Login</p>
             {failedMessage && (
-              <Alert variant="destructive" onClick={()=>setFailedmessage(false)}>
+              <Alert
+                variant="destructive"
+                onClick={() => setFailedmessage(false)}
+              >
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Login Gagal</AlertTitle>
                 <AlertDescription>
@@ -109,7 +114,7 @@ export default function Login() {
               )}
             />
             <Button type="submit" className="w-full">
-              {loading? <Loading/> : "Login"}
+              {loading ? <Loading /> : "Login"}
             </Button>
           </form>
         </Form>

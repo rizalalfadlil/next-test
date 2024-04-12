@@ -30,7 +30,12 @@ const formatRupiah = (number: number) => {
     currency: "IDR",
   }).format(number);
 };
-
+interface UserInterface {
+  id: string;
+  username: string;
+  name: string;
+  type: string;
+}
 export default function Order() {
   const [namaPemesan, setNamaPemesan] = useState("");
   const [loading, setLoading] = useState(false)
@@ -88,16 +93,17 @@ export default function Order() {
       .join(", ");
     setRincianPesanan(rincian);
   };
-
+  const [userData, setUserData] = useState("");
+  const parsedUser: UserInterface = JSON.parse(userData || "{}");
+  useEffect(() => {
+    const user: string = localStorage.getItem("user")!;
+    setUserData(user);
+  }, []);
   const buatPesanan = async () => {
     
-    const userData = localStorage.getItem("user");
-    const parsedUser: {
-      id: string;
-      username: string;
-      name: string;
-      type: string;
-    } = JSON.parse(userData || "{}");
+    
+
+  
     const order = {
       pelanggan: namaPemesan,
       pesanan: rincianPesanan,

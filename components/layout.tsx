@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -77,6 +77,12 @@ const kasirPage = [
     icon: <LogIn />,
   },
 ];
+interface UserInterface {
+  id: string;
+  username: string;
+  name: string;
+  type: string;
+}
 export default function LayoutBase({
   children,
 }: Readonly<{
@@ -84,13 +90,20 @@ export default function LayoutBase({
 }>) {
   const { setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState("light");
-  const userData = localStorage.getItem("user");
-  const parsedUser: {
-    id: string;
-    username: string;
-    name: string;
-    type: string;
-  } = JSON.parse(userData || "{}");
+  const [userData, setUserData] = useState("");
+  const parsedUser: UserInterface = JSON.parse(userData || "{}");
+
+  useEffect(() => {
+    const user: string = localStorage.getItem("user")!;
+    setUserData(user);
+  }, []);
+
+  const [isClient, setIsClient] = useState(false)
+ 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
 
   let showedPage;
   if (parsedUser.type === "admin") showedPage = adminPage;
@@ -103,8 +116,8 @@ export default function LayoutBase({
     </Button>
   ));
 
-  return (
-    <div className="md:grid grid-cols-10">
+  return isClient && (
+    <div className="md:grid grid-cols-10" suppressHydrationWarning>
       <div className="col-span-2 hidden md:block border-e">
         <p className="font-bold text-3xl my-4 px-4 pt-4">
           <a href="/" className="flex justify-center items-center"><div className="size-20 bg-contain" style={{backgroundImage:"url('./logo.png')"}}></div><span className="mt-3 ms-4">Bisa Ngopi</span></a>

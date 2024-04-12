@@ -46,12 +46,24 @@ const formatRupiah = (number: number) => {
   }).format(number);
 };
 
+interface UserInterface {
+  id: string;
+  username: string;
+  name: string;
+  type: string;
+}
+
 export default function menu() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false)
 
-  const userData = localStorage.getItem('user')
-  const parsedUser:{id:string, username:string, name:string, type:string} = JSON.parse(userData || '{}')
+  const [userData, setUserData] = useState("");
+  const parsedUser: UserInterface = JSON.parse(userData || "{}");
+
+  useEffect(() => {
+    const user: string = localStorage.getItem("user")!;
+    setUserData(user);
+  }, []);
   console.log('user info', parsedUser? parsedUser.id : 'not login')
 
   const getMenuList = async () => {

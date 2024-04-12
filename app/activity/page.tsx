@@ -2,19 +2,6 @@
 "use client";
 import LayoutBase from "@/components/layout";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import {
   Table,
   TableBody,
   TableCaption,
@@ -24,23 +11,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import axios from "axios";
-import { Trash2, FilePenLine, CalendarSearch } from "lucide-react";
 import { useEffect, useState } from "react";
 import config from "../../config.json";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import customParseFormat from 'dayjs/plugin/customParseFormat';

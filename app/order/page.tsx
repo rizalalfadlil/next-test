@@ -44,24 +44,31 @@ const formatRupiah = (number: number) => {
 const navigateTo = (url: string) => {
   window.location.href = url;
 };
+interface UserInterface {
+  id: string;
+  username: string;
+  name: string;
+  type: string;
+}
 
 export default function OrderList() {
-  const userData = localStorage.getItem("user");
-  const parsedUser: {
-    id: string;
-    username: string;
-    name: string;
-    type: string;
-  } = JSON.parse(userData || "{}");
+  const [userData, setUserData] = useState("");
+  const parsedUser: UserInterface = JSON.parse(userData || "{}");
+
+  useEffect(() => {
+    const user: string = localStorage.getItem("user")!;
+    setUserData(user);
+    
+  }, []);
   const [data, setData] = useState([]);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [users, setUsers] = useState([]);
   const [filterDate, setFilterDate] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
-  const [selectedUser, setSelectedUser] = useState<String>()
-  const [loading, setLoading] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<String>();
+  const [loading, setLoading] = useState(false);
   const getUsers = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await axios.get(
         `${config.db}api/collections/users/records?page=1&perPage=30`
@@ -70,17 +77,19 @@ export default function OrderList() {
       setUsers(res?.data.items);
     } catch (e) {
       console.log(e);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
   const selectUser = async (id: string) => {
-    setSelectedUser(id)
+    setSelectedUser(id);
     console.log("selected", id);
     setFilterUser(
-      (filterDate?filterDate:data).filter((d: { id: string; userId: string }) => {
-        return d.userId === id;
-      })
+      (filterDate ? filterDate : data).filter(
+        (d: { id: string; userId: string }) => {
+          return d.userId === id;
+        }
+      )
     );
   };
 
@@ -97,21 +106,26 @@ export default function OrderList() {
       })
     );
 
-    setFilterUser((selectedUser?data.filter((d: { id: string; userId: string }) => {
-      return d.userId === selectedUser;
-    }):data).filter((d: { id: string; userId: string; created: string }) => {
-      return (
-        dayjs(d.created).format(showedFormat) ===
-        dayjs(date).format(showedFormat)
-      );
-    }))
+    setFilterUser(
+      (selectedUser
+        ? data.filter((d: { id: string; userId: string }) => {
+            return d.userId === selectedUser;
+          })
+        : data
+      ).filter((d: { id: string; userId: string; created: string }) => {
+        return (
+          dayjs(d.created).format(showedFormat) ===
+          dayjs(date).format(showedFormat)
+        );
+      })
+    );
   };
   const getOrderData = async () => {
     try {
       const res = await axios.get(`${config.db}api/collections/orders/records`);
       setData(res.data.items);
       setFilterDate(res.data.items);
-      setFilterUser(res.data.items)
+      setFilterUser(res.data.items);
       console.log(res.data);
     } catch (e) {
       console.error(e);
@@ -144,10 +158,9 @@ export default function OrderList() {
     return formatRupiah(number);
   };
 
-  const clearFilter = () =>{
-    window.location.reload()
-    
-  }
+  const clearFilter = () => {
+    window.location.reload();
+  };
   return (
     <LayoutBase>
       <div>OrderList</div>
@@ -163,7 +176,6 @@ export default function OrderList() {
           </PopoverContent>
         </Popover>
         <Select
-
           onValueChange={(e) => {
             selectUser(e);
           }}
@@ -179,7 +191,9 @@ export default function OrderList() {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Button variant="outline" onClick={clearFilter}>Hapus Filter</Button>
+        <Button variant="outline" onClick={clearFilter}>
+          Hapus Filter
+        </Button>
       </div>
 
       <Table>
@@ -225,7 +239,12 @@ export default function OrderList() {
           )}
         </TableBody>
       </Table>
-      {loading && (<div className="flex my-4 justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
+      {loading && (
+        <div className="flex my-4 justify-center">
+          <span className="me-2">memuat data</span>
+          <Loading />
+        </div>
+      )}
       <div className="grid md:grid-cols-2 w-full gap-4 my-8">
         <div className="border rounded-md p-4 ">
           <p className="text-lg foont-medium">Pendapatan bulan ini</p>
