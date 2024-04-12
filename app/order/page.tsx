@@ -52,8 +52,14 @@ interface UserInterface {
 }
 
 export default function OrderList() {
-  const userData = localStorage.getItem("user");
+  const [userData, setUserData] = useState("");
   const parsedUser: UserInterface = JSON.parse(userData || "{}");
+  
+  useEffect(() => {
+    const user: string = localStorage.getItem("user")!;
+    setUserData(user);
+  }, []);
+  
   const [data, setData] = useState([]);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [users, setUsers] = useState([]);
