@@ -1,6 +1,6 @@
 <h1 align="center">Bisa Ngopi</h1>
 <h3 align="center">Dokumentasi</h3>
-<p align="center" style="background-color:#910a00; border-radius:2px">Hafidz Rizal Al-Fadlil</p>
+<p align="center" style="background-color:#910a00;color:white; border-radius:2px">Hafidz Rizal Al-Fadlil</p>
 
 ## daftar isi
 
