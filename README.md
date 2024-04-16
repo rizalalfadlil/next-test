@@ -131,3 +131,77 @@ terdapat 3 jenis akun yang dapat digunakan dengan yaitu :
     - buat pesanan baru dengan menekan tombol <span style="background-color:black; padding:1px 4px; border-radius:4px"> buat pesanan baru </span>
 
 <img src="./screenshots/order.png" width="300" style="margin:20px 0">
+
+# Dokumentasi Api (Back-End)
+
+## User
+
+### Login 
+>Melakukan Login
+
+API url : 
+>`POST` /api/collections/users/auth-with-password
+
+Body : 
+>identity(string)* , password(string)*
+
+### Read
+>Mendapatkan data user
+
+API Url : 
+> `GET` /api/collections/users/records (mendapatkan semua data)
+
+> `GET` /api/collections/users/records/:id (mendapatkan salah satu data)
+
+### Create
+Register/Membuat akun baru
+
+API Url : 
+>`post` /api/collections/users/records
+
+Body
+>username(string) , password(string)* , name(string) , type(admin/manajer/kasir)*
+
+### Update
+Memperbarui data salah satu user
+
+API Url : 
+>`patch` /api/collections/users/records
+
+Body
+>username(string) , name(string) , type(admin/manajer/kasir)
+
+## Activity
+
+### Create
+Membuat riwayat aktivitas baru
+
+API Url :  
+>`POST` /api/collections/activity/records
+
+Body : 
+>log(string)* , userid(string)*
+
+### Read
+Mendapatkan semua data riwayat aktivitas
+
+API Url :  
+>`GET` /api/collections/activity/records
+
+
+## Order
+
+### Create
+Membuat pesanan baru
+
+API Url :  
+>`POST` /api/collections/order/records
+
+Body : 
+>pelanggan(string)* , pesanan(string)* , total(integer), userid(string)
+
+### Read
+Mendapatkan semua data riwayat pesanan
+
+API Url :  
+>`GET` /api/collections/order/records
