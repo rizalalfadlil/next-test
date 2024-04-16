@@ -40,7 +40,7 @@ dan aplikasi akan berjalan di http://localhost:3000
 
 # Panduan penggunaan aplikasi
 
-<img src="./screenshots/login.png" width="400" style="margin:40px 0">
+<img src="https://raw.githubusercontent.com/rizalalfadlil/next-test/master/screenshots/login.png" width="400" style="margin:40px 0">
 
 saat pertama kali menggunakan, aplikasi akan membuka halaman log-in,
 terdapat 3 jenis akun yang dapat digunakan dengan yaitu :
@@ -78,7 +78,7 @@ terdapat 3 jenis akun yang dapat digunakan dengan yaitu :
 
 ## Menggunakan aplikasi sebagai `admin`
 
-<img src="./screenshots/homeadmin.png" width="400" style="margin:20px 0">
+<img src="https://raw.githubusercontent.com/rizalalfadlil/next-test/master/screenshots/homeadmin.png" width="400" style="margin:20px 0">
 
 ---
 
@@ -87,50 +87,50 @@ terdapat 3 jenis akun yang dapat digunakan dengan yaitu :
   - klik tombol <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg> di salah satu record untuk menghapus sebuah akun
   - klik tombol <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-eye"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="1"/><path d="M5 12s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5"/></svg> untuk melihat atau mengedit akun
 
-<img src="./screenshots/users.png" width="300" width="400" style="margin:20px 0">
+<img src="https://raw.githubusercontent.com/rizalalfadlil/next-test/master/screenshots/users.png" width="300" width="400" style="margin:20px 0">
 
 ---
 
 - lihat riwayat aktivitas <svg xmlns="http://www.w3.org/2000/svg"   width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> dengan membuka halaman `/activity`
 
-<img src="./screenshots/activity.png" width="300" width="400" style="margin:20px 0">
+<img src="https://raw.githubusercontent.com/rizalalfadlil/next-test/master/screenshots/activity.png" width="300" width="400" style="margin:20px 0">
 
 ## Menggunakan aplikasi sebagai `manajer`
 
-<img src="./screenshots/homemanajer.png" width="400" style="margin:40px 0">
+<img src="https://raw.githubusercontent.com/rizalalfadlil/next-test/master/screenshots/homemanajer.png" width="400" style="margin:40px 0">
 
 ---
 
 - kelola daftar menu <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-coffee"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg> dengan membuka halaman `/menu`
-  - buat menu baru dengan menekan tombol <span style="background-color:black; padding:2px 8px; border-radius:4px"> tambah data </span>
-  - edit sebuah data dengan menekan tombol <span style="background-color:black; padding:1px 4px; border-radius:4px"> edit </span> di salah satu menu yang ada atau hapus dengan menekan tombol <span style="background-color:maroon; padding:1px 4px; border-radius:4px"> hapus </span>
+  - buat menu baru dengan menekan tombol <span style="color:white;background-color:black; padding:2px 8px; border-radius:4px"> tambah data </span>
+  - edit sebuah data dengan menekan tombol <span style="color:white;background-color:black; padding:1px 4px; border-radius:4px"> edit </span> di salah satu menu yang ada atau hapus dengan menekan tombol <span style="color:white;background-color:maroon; padding:1px 4px; border-radius:4px"> hapus </span>
 
-<img src="./screenshots/order.png" width="300" style="margin:20px 0">
+<img src="https://raw.githubusercontent.com/rizalalfadlil/next-test/master/screenshots/order.png" width="300" style="margin:20px 0">
 
 ---
 
 - lihat riwayat aktivitas <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> dengan membuka halaman `/activity`
 
-<img src="./screenshots/activity.png" width="300">
+<img src="https://raw.githubusercontent.com/rizalalfadlil/next-test/master/screenshots/activity.png" width="300">
 
 ---
 
 - lihat riwayat pemesanan <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-notebook-tabs"><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M15 2v20"/><path d="M15 7h5"/><path d="M15 12h5"/><path d="M15 17h5"/></svg> dengan membuka halaman `/order`
-    - lihat salah satu detail pesanan lebih lengkap dengan menekan tombol <span style="background-color:black; padding:1px 4px; border-radius:4px"> lihat </span> di salah satu datanya
+    - lihat salah satu detail pesanan lebih lengkap dengan menekan tombol <span style="color:white;background-color:black; padding:1px 4px; border-radius:4px"> lihat </span> di salah satu datanya
 
-<img src="./screenshots/order.png" width="300">
+<img src="https://raw.githubusercontent.com/rizalalfadlil/next-test/master/screenshots/order.png" width="300">
 
 ## Menggunakan aplikasi sebagai `kasir`
 
-<img src="./screenshots/homekasir.png" width="400" style="margin:20px 0">
+<img src="https://raw.githubusercontent.com/rizalalfadlil/next-test/master/screenshots/homekasir.png" width="400" style="margin:20px 0">
 
 ---
 
 - lihat riwayat pemesanan <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-notebook-tabs"><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M15 2v20"/><path d="M15 7h5"/><path d="M15 12h5"/><path d="M15 17h5"/></svg> dengan membuka halaman `/order`
-    - lihat salah satu detail pesanan lebih lengkap dengan menekan tombol <span style="background-color:black; padding:1px 4px; border-radius:4px"> lihat </span> di salah satu datanya
-    - buat pesanan baru dengan menekan tombol <span style="background-color:black; padding:1px 4px; border-radius:4px"> buat pesanan baru </span>
+    - lihat salah satu detail pesanan lebih lengkap dengan menekan tombol <span style="color:white;background-color:black; padding:1px 4px; border-radius:4px"> lihat </span> di salah satu datanya
+    - buat pesanan baru dengan menekan tombol <span style="color:white;background-color:black; padding:1px 4px; border-radius:4px"> buat pesanan baru </span>
 
-<img src="./screenshots/order.png" width="300" style="margin:20px 0">
+<img src="https://raw.githubusercontent.com/rizalalfadlil/next-test/master/screenshots/order.png" width="300" style="margin:20px 0">
 
 # Dokumentasi Api (Back-End)
 
@@ -140,7 +140,7 @@ terdapat 3 jenis akun yang dapat digunakan dengan yaitu :
 >Melakukan Login
 
 API url : 
->`POST` /api/collections/users/auth-with-password
+><span style="background-color:green;color:white;padding:1px 4px;border-radius:4px">POST</span> /api/collections/users/auth-with-password
 
 Body : 
 >identity(string)* , password(string)*
@@ -149,15 +149,15 @@ Body :
 >Mendapatkan data user
 
 API Url : 
-> `GET` /api/collections/users/records (mendapatkan semua data)
+> <span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/collections/users/records (mendapatkan semua data)
 
-> `GET` /api/collections/users/records/:id (mendapatkan salah satu data)
+> <span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/collections/users/records/:id (mendapatkan salah satu data)
 
 ### Create
 Register/Membuat akun baru
 
 API Url : 
->`post` /api/collections/users/records
+><span style="background-color:green;color:white;padding:1px 4px;border-radius:4px">POST</span> /api/collections/users/records
 
 Body
 >username(string) , password(string)* , name(string) , type(admin/manajer/kasir)*
@@ -166,10 +166,17 @@ Body
 Memperbarui data salah satu user
 
 API Url : 
->`patch` /api/collections/users/records
+><span style="background-color:tomato;color:white;padding:1px 4px;border-radius:4px">PATCH</span> /api/collections/users/records
 
 Body
 >username(string) , name(string) , type(admin/manajer/kasir)
+
+### DELETE
+Menghapus data salah satu user
+
+API Url : 
+><span style="background-color:red;color:white;padding:1px 4px;border-radius:4px">DELETE</span> /api/collections/users/records:/id
+
 
 ## Activity
 
@@ -177,7 +184,7 @@ Body
 Membuat riwayat aktivitas baru
 
 API Url :  
->`POST` /api/collections/activity/records
+><span style="background-color:green;color:white;padding:1px 4px;border-radius:4px">POST</span> /api/collections/activity/records
 
 Body : 
 >log(string)* , userid(string)*
@@ -186,7 +193,7 @@ Body :
 Mendapatkan semua data riwayat aktivitas
 
 API Url :  
->`GET` /api/collections/activity/records
+><span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/collections/activity/records
 
 
 ## Order
@@ -195,7 +202,7 @@ API Url :
 Membuat pesanan baru
 
 API Url :  
->`POST` /api/collections/order/records
+><span style="background-color:green;color:white;padding:1px 4px;border-radius:4px">POST</span> /api/collections/order/records
 
 Body : 
 >pelanggan(string)* , pesanan(string)* , total(integer), userid(string)
@@ -204,4 +211,6 @@ Body :
 Mendapatkan semua data riwayat pesanan
 
 API Url :  
->`GET` /api/collections/order/records
+><span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/collections/order/records (mendapatkan semua data)
+
+><span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/collections/order/records/:id (mendapatkan salah satu data)
