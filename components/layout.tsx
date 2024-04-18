@@ -77,6 +77,14 @@ const kasirPage = [
     icon: <LogIn />,
   },
 ];
+const guestPage = [
+  {
+    title: "Login",
+    target: "login",
+    icon: <LogIn />,
+  },
+];
+
 interface UserInterface {
   id: string;
   username: string;
@@ -108,7 +116,8 @@ export default function LayoutBase({
   let showedPage;
   if (parsedUser.type === "admin") showedPage = adminPage;
   else if (parsedUser.type === "manajer") showedPage = managerPage;
-  else showedPage = kasirPage;
+  else if (parsedUser.type === "kasir") showedPage = kasirPage;
+  else showedPage = guestPage;
 
   const navigationButtons = showedPage.map((p) => (
     <Button variant="link" onClick={() => navigateTo(`/${p.target}`)}>
@@ -120,10 +129,10 @@ export default function LayoutBase({
     <div className="md:grid grid-cols-10" suppressHydrationWarning>
       <div className="col-span-2 hidden md:block border-e">
         <p className="font-bold text-3xl my-4 px-4 pt-4">
-          <a href="/" className="flex justify-center items-center"><div className="size-20 bg-contain" style={{backgroundImage:"url('./logo.png')"}}></div><span className="mt-3 ms-4">Bisa Ngopi</span></a>
+          <a href="/" className="flex justify-center items-center"><div className="size-20 bg-contain bg-center bg-no-repeat" style={{backgroundImage:"url('./logo.png')"}}></div><span className="mt-3 ms-4">Bisa Ngopi</span></a>
         </p>
         <div className="px-4 pb-4">
-          <Badge>{parsedUser.type}</Badge>
+          {parsedUser.type && (<Badge>{parsedUser.type}</Badge>)}
         </div>
         <Separator />
         <div className="p-4 grid gap-2">
@@ -145,54 +154,20 @@ export default function LayoutBase({
       <div className="h-screen col-span-8 mt-16 md:mt-0">
         <div className="flex flex-col h-full overflow-y-scroll">
           <div className="grow md:p-8 p-4">{children}</div>
-          <div className="h-48 flex-none grid gap-2 bg-slate-500 text-white text-center align-middle text-lg p-8">
+          <div className="h-48 flex-none grid bg-slate-500 text-white text-center align-middle text-lg p-8">
             <p>2024 - Hafidz Rizal Al-Fadlil</p>
-            <p>
-              using |{" "}
-              <span>
-                <a
-                  href="https://nextjs.org/"
-                  className="border-b hover:border-0"
-                >
-                  next.js
-                </a>{" "}
-                |{" "}
-                <a
-                  href="https://vercel.com/templates/next.js/nextjs-boilerplate"
-                  className="border-b hover:border-0"
-                >
-                  create-next-app
-                </a>{" "}
-                |{" "}
-                <a
-                  href="https://tailwindcss.com/"
-                  className="border-b hover:border-0"
-                >
-                  tailwindcss
-                </a>{" "}
-                |{" "}
-                <a
-                  href="https://ui.shadcn.com/"
-                  className="border-b hover:border-0"
-                >
-                  shadcn
-                </a>{" "}
-                |{" "}
-                <a
-                  href="https://lucide.dev/guide/packages/lucide-react"
-                  className="border-b hover:border-0"
-                >
-                  lucide react
-                </a>{" "}
-                |
-              </span>
-            </p>
             <p className="">
+            <a
+                href="https://bisa-ngopi-docs.vercel.app"
+                className="border-b hover:border-0 me-8"
+              >
+                Docs
+              </a>
               <a
                 href="https://github.com/rizalalfadlil/next-test"
                 className="border-b hover:border-0"
               >
-                GitHub Repository →
+                Repository 
               </a>
             </p>
           </div>

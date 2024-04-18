@@ -15,6 +15,7 @@ import {
 import LayoutBase from '@/components/layout';
 import { Label } from '@radix-ui/react-label';
 import { Loading } from '@/components/Loading';
+import checkAccess from '@/components/checkAccess';
 
 const formatRupiah = (number: number) => {
   return Intl.NumberFormat("id-ID", {
@@ -46,6 +47,7 @@ export default function page({ params }: any) {
 
   return (
     <LayoutBase>
+      {checkAccess(["kasir", "manajer"], (<>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -80,6 +82,7 @@ export default function page({ params }: any) {
       </div>
       </div>
       {loading && (<div className="flex my-4 justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
-      </LayoutBase>
+      </>))}
+    </LayoutBase>
   )
 }

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/Loading";
+import checkAccess from "@/components/checkAccess";
 
 interface MenuItem {
   nama: string;
@@ -38,21 +39,21 @@ interface UserInterface {
 }
 export default function Order() {
   const [namaPemesan, setNamaPemesan] = useState("");
-  const [loading, setLoading] = useState(false)
-  const [btnLoading, setBtnLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [daftarMenu, setDaftarMenu] = useState<MenuItem[]>([]);
   const [pesanan, setPesanan] = useState<PesananItem[]>([]);
   const [rincianPesanan, setRincianPesanan] = useState("");
 
   const getMenu = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await axios.get(`${config.db}api/collections/menu/records?`);
       setDaftarMenu(res.data.items);
     } catch (e) {
       console.error(e);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,10 +101,6 @@ export default function Order() {
     setUserData(user);
   }, []);
   const buatPesanan = async () => {
-    
-    
-
-  
     const order = {
       pelanggan: namaPemesan,
       pesanan: rincianPesanan,
@@ -111,7 +108,7 @@ export default function Order() {
       userId: parsedUser.id,
     };
     try {
-      setBtnLoading(true)
+      setBtnLoading(true);
       const res = await axios.post(
         `${config.db}api/collections/orders/records`,
         order,
@@ -122,97 +119,116 @@ export default function Order() {
         }
       );
       console.log("pesanan", res);
-      const res2 = await axios.post(`${config.db}api/collections/activity/records`, {log:`membuat transaksi baru : ${res.data.id}`, userId:parsedUser.id}, {
-        headers: {
+      const res2 = await axios.post(
+        `${config.db}api/collections/activity/records`,
+        {
+          log: `membuat transaksi baru : ${res.data.id}`,
+          userId: parsedUser.id,
+        },
+        {
+          headers: {
             "Content-Type": "application/json",
           },
-      });
-      console.log(res2)
+        }
+      );
+      console.log(res2);
     } catch (e) {
       console.error(e);
-    }finally{
-      setBtnLoading(false)
+    } finally {
+      setBtnLoading(false);
     }
     setPesanan([]);
   };
 
   return (
     <LayoutBase>
-      <p className="text-xl font-bold">Buat Pesanan Baru</p>
-      <div className="p-4 grid gap-4">
-        <div>
-          <Label className="text-lg pb-4">Nama pemesan</Label>
-          <Input
-            type="text"
-            value={namaPemesan}
-            onChange={(e) => setNamaPemesan(e.target.value)}
-          />
-        </div>
-        <div>
-          <Label className="text-lg pb-4">Daftar menu</Label>
-          <div className="grid md:grid-cols-4 gap-4">
-            {daftarMenu.map((m: MenuItem) => (
-              <Card key={m.nama} className="p-4">
-                <CardTitle>{m.nama}</CardTitle>
-                <CardDescription className="my-4">
-                  {formatRupiah(m.harga)}
-                </CardDescription>
-                <Button
-                  onClick={() => tambahPesanan(m)}
-                  disabled={pesanan.some((item) => item.nama === m.nama)}
-                >
-                  Tambahkan
-                </Button>
-              </Card>
-            ))}
-          </div>
-          {loading && (<div className="flex my-4 justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
-        </div>
-        <div>
-          <Label className="text-lg pb-4">Pesanan</Label>
-          <div className="grid gap-4">
-            {pesanan.map((item, index) => (
-              <Card key={index} className="p-4 grid md:grid-cols-4 gap-4">
-                <span>{item.nama}</span>
-                <div className="grid grid-cols-2 md:text-end gap-2">
-                  <span>Jumlah :</span>
-                  <Input
-                    type="number"
-                    value={item.jumlah}
-                    onChange={(e) => {
-                      const updatedPesanan = [...pesanan];
-                      updatedPesanan[index].jumlah = parseInt(e.target.value);
-                      setPesanan(updatedPesanan);
-                    }}
-                  />
+      {checkAccess(
+        "kasir",
+        <>
+          <p className="text-xl font-bold">Buat Pesanan Baru</p>
+          <div className="p-4 grid gap-4">
+            <div>
+              <Label className="text-lg pb-4">Nama pemesan</Label>
+              <Input
+                type="text"
+                value={namaPemesan}
+                onChange={(e) => setNamaPemesan(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label className="text-lg pb-4">Daftar menu</Label>
+              <div className="grid md:grid-cols-4 gap-4">
+                {daftarMenu.map((m: MenuItem) => (
+                  <Card key={m.nama} className="p-4">
+                    <CardTitle>{m.nama}</CardTitle>
+                    <CardDescription className="my-4">
+                      {formatRupiah(m.harga)}
+                    </CardDescription>
+                    <Button
+                      onClick={() => tambahPesanan(m)}
+                      disabled={pesanan.some((item) => item.nama === m.nama)}
+                    >
+                      Tambahkan
+                    </Button>
+                  </Card>
+                ))}
+              </div>
+              {loading && (
+                <div className="flex my-4 justify-center">
+                  <span className="me-2">memuat data</span>
+                  <Loading />
                 </div>
-                <span>{formatRupiah(item.harga * item.jumlah)}</span>
-                <Button
-                  variant="destructive"
-                  onClick={() => hapusPesanan(index)}
-                >
-                  Hapus
-                </Button>
-              </Card>
-            ))}
+              )}
+            </div>
+            <div>
+              <Label className="text-lg pb-4">Pesanan</Label>
+              <div className="grid gap-4">
+                {pesanan.map((item, index) => (
+                  <Card key={index} className="p-4 grid md:grid-cols-4 gap-4">
+                    <span>{item.nama}</span>
+                    <div className="grid grid-cols-2 md:text-end gap-2">
+                      <span>Jumlah :</span>
+                      <Input
+                        type="number"
+                        value={item.jumlah}
+                        onChange={(e) => {
+                          const updatedPesanan = [...pesanan];
+                          updatedPesanan[index].jumlah = parseInt(
+                            e.target.value
+                          );
+                          setPesanan(updatedPesanan);
+                        }}
+                      />
+                    </div>
+                    <span>{formatRupiah(item.harga * item.jumlah)}</span>
+                    <Button
+                      variant="destructive"
+                      onClick={() => hapusPesanan(index)}
+                    >
+                      Hapus
+                    </Button>
+                  </Card>
+                ))}
+              </div>
+            </div>
+            <div>
+              <Label className="text-lg pb-4">Rincian Pesanan:</Label>
+              <p>{rincianPesanan}</p>
+            </div>
+            <div>
+              <Label className="text-lg pb-4">
+                Total Harga : {formatRupiah(hitungTotalHarga())}
+              </Label>
+            </div>
+            <Button
+              onClick={buatPesanan}
+              disabled={pesanan.length == 0 || namaPemesan == ""}
+            >
+              {btnLoading ? <Loading /> : "Buat Pesanan"}
+            </Button>
           </div>
-        </div>
-        <div>
-          <Label className="text-lg pb-4">Rincian Pesanan:</Label>
-          <p>{rincianPesanan}</p>
-        </div>
-        <div>
-          <Label className="text-lg pb-4">
-            Total Harga : {formatRupiah(hitungTotalHarga())}
-          </Label>
-        </div>
-        <Button
-          onClick={buatPesanan}
-          disabled={pesanan.length == 0 || namaPemesan == ""}
-        >
-          {btnLoading? <Loading/> : "Buat Pesanan"}
-        </Button>
-      </div>
+        </>
+      )}
     </LayoutBase>
   );
 }

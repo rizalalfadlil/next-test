@@ -1,0 +1,117 @@
+
+# Dokumentasi Api (Back-End)
+
+## User
+
+### Login 
+>Melakukan Login
+
+API url : 
+><span style="background-color:green;color:white;padding:1px 4px;border-radius:4px">POST</span> /api/collections/users/auth-with-password
+
+Body : 
+>identity(string)* , password(string)*
+
+### Read
+>Mendapatkan data user
+
+API Url : 
+> <span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/collections/users/records (mendapatkan semua data)
+
+> <span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/collections/users/records/:id (mendapatkan salah satu data)
+
+### Create
+Register/Membuat akun baru
+
+API Url : 
+><span style="background-color:green;color:white;padding:1px 4px;border-radius:4px">POST</span> /api/collections/users/records
+
+Body
+>username(string) , password(string)* , name(string) , type(admin/manajer/kasir)*
+
+### Update
+Memperbarui data salah satu user
+
+API Url : 
+><span style="background-color:tomato;color:white;padding:1px 4px;border-radius:4px">PATCH</span> /api/collections/users/records
+
+Body
+>username(string) , name(string) , type(admin/manajer/kasir)
+
+### DELETE
+Menghapus data salah satu user
+
+API Url : 
+><span style="background-color:red;color:white;padding:1px 4px;border-radius:4px">DELETE</span> /api/collections/users/records:/id
+
+---
+
+## Activity
+
+### Create
+Membuat riwayat aktivitas baru
+
+API Url :  
+><span style="background-color:green;color:white;padding:1px 4px;border-radius:4px">POST</span> /api/collections/activity/records
+
+Body : 
+>log(string)* , userid(string)*
+
+### Read
+Mendapatkan semua data riwayat aktivitas
+
+API Url :  
+><span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/collections/activity/records
+
+---
+## Order
+
+### Create
+Membuat pesanan baru
+
+API Url :  
+><span style="background-color:green;color:white;padding:1px 4px;border-radius:4px">POST</span> /api/collections/order/records
+
+Body : 
+>pelanggan(string)* , pesanan(string)* , total(integer), userid(string)
+
+### Read
+Mendapatkan semua data riwayat pesanan
+
+API Url :  
+><span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/collections/order/records (mendapatkan semua data)
+
+><span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/collections/order/records/:id (mendapatkan salah satu data)
+---
+## Menu
+
+### Create
+Membuat menu baru
+
+API Url :  
+><span style="background-color:green;color:white;padding:1px 4px;border-radius:4px">POST</span> /api/menu/order/records
+
+Body : 
+>nama(string)* , harga(integer)* , foto(string)*
+
+### Read
+Mendapatkan semua data riwayat pesanan
+
+API Url :  
+><span style="background-color:blue;color:white;padding:1px 4px;border-radius:4px">GET</span> /api/menu/order/records 
+
+### Update
+Memperbarui data salah satu menu
+
+API Url :  
+><span style="background-color:tomato;color:white;padding:1px 4px;border-radius:4px">PATCH</span> /api/menu/order/records/:id
+
+Body : 
+>nama(string)* , harga(integer)* , foto(string)*
+
+### Delete
+Menghapus salah satu menu
+
+API Url :  
+><span style="background-color:red;color:white;padding:1px 4px;border-radius:4px">DELETE</span> /api/menu/order/records/:id
+

@@ -62,7 +62,13 @@ const kasirPage = [
     icon: <LogIn className="w-full size-12 my-4" />,
   },
 ];
-
+const guestPage = [
+  {
+    title: "Login",
+    target: "login",
+    icon: <LogIn className="w-full size-12 my-4"/>,
+  },
+];
 interface UserInterface {
   id: string;
   username: string;
@@ -82,7 +88,8 @@ export default function Home() {
   let showedPage;
   if (parsedUser.type === "admin") showedPage = adminPage;
   else if (parsedUser.type === "manajer") showedPage = managerPage;
-  else showedPage = kasirPage;
+  else if (parsedUser.type === "kasir") showedPage = kasirPage;
+  else showedPage = guestPage;
 
   const menuButtons = showedPage.map((p) => (
     <Card
@@ -104,19 +111,21 @@ export default function Home() {
           style={{ backgroundImage: "url('')" }}
         >
           <div
-            className="h-full aspect-square bg-contain"
+            className="h-4/5 aspect-square bg-contain"
             style={{ backgroundImage: "url('./logo.png')" }}
           ></div>
-          <p className="text-5xl md:text-6xl ms-4 md:ms-8 font-medium tracking-wide mt-3">
+          <p className="text-4xl md:text-6xl ms-4 md:ms-8 font-medium tracking-wide mt-3">
             Bisa Ngopi
           </p>
         </div>
-        <p className="text-lg">
+        {parsedUser.name ? (
+          <p className="text-lg">
           Halo,{" "}
           <span className="font-semibold capitalize">
             {parsedUser.type} {parsedUser.name}
           </span>
         </p>
+        ) : 'silahkan login untuk menggunakan aplikasi'}
         <div className="grid grid-cols-2  md:grid-cols-4 2xl:grid-cols-8 gap-4">
           {menuButtons}
         </div>

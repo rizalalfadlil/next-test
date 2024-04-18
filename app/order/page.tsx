@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Loading } from "@/components/Loading";
+import checkAccess from "@/components/checkAccess";
 const showedFormat = "DD MMMM YYYY";
 
 const formatRupiah = (number: number) => {
@@ -54,21 +55,21 @@ interface UserInterface {
 export default function OrderList() {
   const [userData, setUserData] = useState("");
   const parsedUser: UserInterface = JSON.parse(userData || "{}");
-  
+
   useEffect(() => {
     const user: string = localStorage.getItem("user")!;
     setUserData(user);
   }, []);
-  
+
   const [data, setData] = useState([]);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [users, setUsers] = useState([]);
   const [filterDate, setFilterDate] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
-  const [selectedUser, setSelectedUser] = useState<String>()
-  const [loading, setLoading] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<String>();
+  const [loading, setLoading] = useState(false);
   const getUsers = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await axios.get(
         `${config.db}api/collections/users/records?page=1&perPage=30`
@@ -77,17 +78,19 @@ export default function OrderList() {
       setUsers(res?.data.items);
     } catch (e) {
       console.log(e);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
   const selectUser = async (id: string) => {
-    setSelectedUser(id)
+    setSelectedUser(id);
     console.log("selected", id);
     setFilterUser(
-      (filterDate?filterDate:data).filter((d: { id: string; userId: string }) => {
-        return d.userId === id;
-      })
+      (filterDate ? filterDate : data).filter(
+        (d: { id: string; userId: string }) => {
+          return d.userId === id;
+        }
+      )
     );
   };
 
@@ -104,21 +107,26 @@ export default function OrderList() {
       })
     );
 
-    setFilterUser((selectedUser?data.filter((d: { id: string; userId: string }) => {
-      return d.userId === selectedUser;
-    }):data).filter((d: { id: string; userId: string; created: string }) => {
-      return (
-        dayjs(d.created).format(showedFormat) ===
-        dayjs(date).format(showedFormat)
-      );
-    }))
+    setFilterUser(
+      (selectedUser
+        ? data.filter((d: { id: string; userId: string }) => {
+            return d.userId === selectedUser;
+          })
+        : data
+      ).filter((d: { id: string; userId: string; created: string }) => {
+        return (
+          dayjs(d.created).format(showedFormat) ===
+          dayjs(date).format(showedFormat)
+        );
+      })
+    );
   };
   const getOrderData = async () => {
     try {
       const res = await axios.get(`${config.db}api/collections/orders/records`);
       setData(res.data.items);
       setFilterDate(res.data.items);
-      setFilterUser(res.data.items)
+      setFilterUser(res.data.items);
       console.log(res.data);
     } catch (e) {
       console.error(e);
@@ -151,102 +159,112 @@ export default function OrderList() {
     return formatRupiah(number);
   };
 
-  const clearFilter = () =>{
-    window.location.reload()
-    
-  }
+  const clearFilter = () => {
+    window.location.reload();
+  };
   return (
     <LayoutBase>
-      <div>OrderList</div>
-      <div className="grid grid-cols-3 gap-4 py-4">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline">
-              <CalendarSearch className="me-4" /> Pilih Tanggal
+      {checkAccess(
+        ["kasir", "manajer"],
+        <>
+          <div>OrderList</div>
+          <div className="grid grid-cols-3 gap-4 py-4">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline">
+                  <CalendarSearch className="me-4" /> Pilih Tanggal
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <Calendar mode="single" selected={date} onSelect={selectDate} />
+              </PopoverContent>
+            </Popover>
+            <Select
+              onValueChange={(e) => {
+                selectUser(e);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="pilih user" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {users.map((m: { id: string; name: string }) => (
+                    <SelectItem value={m.id}>{m.name}</SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <Button variant="outline" onClick={clearFilter}>
+              Hapus Filter
             </Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <Calendar mode="single" selected={date} onSelect={selectDate} />
-          </PopoverContent>
-        </Popover>
-        <Select
+          </div>
 
-          onValueChange={(e) => {
-            selectUser(e);
-          }}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="pilih user" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {users.map((m: { id: string; name: string }) => (
-                <SelectItem value={m.id}>{m.name}</SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Button variant="outline" onClick={clearFilter}>Hapus Filter</Button>
-      </div>
-
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>id</TableHead>
-            <TableHead>user id</TableHead>
-            <TableHead>pelanggan</TableHead>
-            <TableHead>pesanan</TableHead>
-            <TableHead>total</TableHead>
-            <TableHead>tanggal</TableHead>
-            <TableHead>aksi</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filterUser?.map(
-            (d: {
-              id: string;
-              userId: string;
-              pelanggan: string;
-              pesanan: string;
-              created: string;
-              total: string;
-            }) => {
-              return (
-                <TableRow>
-                  <TableCell>{d?.id}</TableCell>
-                  <TableCell>{d?.userId}</TableCell>
-                  <TableCell>{d?.pelanggan}</TableCell>
-                  <TableCell>{d?.pesanan}</TableCell>
-                  <TableCell>{formatRupiah(parseInt(d?.total))}</TableCell>
-                  <TableCell>
-                    {dayjs(d?.created).format(showedFormat)}
-                  </TableCell>
-                  <TableCell>
-                    <Button onClick={() => navigateTo(`/order/${d.id}`)}>
-                      Lihat
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            }
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>id</TableHead>
+                <TableHead>user id</TableHead>
+                <TableHead>pelanggan</TableHead>
+                <TableHead>pesanan</TableHead>
+                <TableHead>total</TableHead>
+                <TableHead>tanggal</TableHead>
+                <TableHead>aksi</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filterUser?.map(
+                (d: {
+                  id: string;
+                  userId: string;
+                  pelanggan: string;
+                  pesanan: string;
+                  created: string;
+                  total: string;
+                }) => {
+                  return (
+                    <TableRow>
+                      <TableCell>{d?.id}</TableCell>
+                      <TableCell>{d?.userId}</TableCell>
+                      <TableCell>{d?.pelanggan}</TableCell>
+                      <TableCell>{d?.pesanan}</TableCell>
+                      <TableCell>{formatRupiah(parseInt(d?.total))}</TableCell>
+                      <TableCell>
+                        {dayjs(d?.created).format(showedFormat)}
+                      </TableCell>
+                      <TableCell>
+                        <Button onClick={() => navigateTo(`/order/${d.id}`)}>
+                          Lihat
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                }
+              )}
+            </TableBody>
+          </Table>
+          {loading && (
+            <div className="flex my-4 justify-center">
+              <span className="me-2">memuat data</span>
+              <Loading />
+            </div>
           )}
-        </TableBody>
-      </Table>
-      {loading && (<div className="flex my-4 justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
-      <div className="grid md:grid-cols-2 w-full gap-4 my-8">
-        <div className="border rounded-md p-4 ">
-          <p className="text-lg foont-medium">Pendapatan bulan ini</p>
-          <p className="text-2xl font-bold">{getMonthIncome()}</p>
-        </div>
-        <div className="border rounded-md p-4 ">
-          <p className="text-lg foont-medium">Pendapatan tahun ini</p>
-          <p className="text-2xl font-bold">{getYearIncome()}</p>
-        </div>
-      </div>
-      {parsedUser.type === "kasir" && (
-        <Button className="mt-4" onClick={() => navigateTo("/order/new")}>
-          Buat pesanan baru
-        </Button>
+          <div className="grid md:grid-cols-2 w-full gap-4 my-8">
+            <div className="border rounded-md p-4 ">
+              <p className="text-lg foont-medium">Pendapatan bulan ini</p>
+              <p className="text-2xl font-bold">{getMonthIncome()}</p>
+            </div>
+            <div className="border rounded-md p-4 ">
+              <p className="text-lg foont-medium">Pendapatan tahun ini</p>
+              <p className="text-2xl font-bold">{getYearIncome()}</p>
+            </div>
+          </div>
+          {parsedUser.type === "kasir" && (
+            <Button className="mt-4" onClick={() => navigateTo("/order/new")}>
+              Buat pesanan baru
+            </Button>
+          )}
+        </>
       )}
     </LayoutBase>
   );

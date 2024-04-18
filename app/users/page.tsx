@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-key */
 "use client";
+import checkAccess from "@/components/checkAccess";
 import LayoutBase from "@/components/layout";
 import { Loading } from "@/components/Loading";
 import {
@@ -71,7 +72,8 @@ export default function Users() {
 
   return (
     <LayoutBase>
-      <p className="font-bold text-lg my-8">List of users</p>
+      {checkAccess('admin',(<>
+        <p className="font-bold text-lg my-8">List of users</p>
       <ScrollArea className="">
         <Table>
           <TableHeader>
@@ -121,7 +123,7 @@ export default function Users() {
         </Table>
         {loading && (<div className="flex my-4 justify-center"><span className="me-2">memuat data</span><Loading/></div>)}
         <Button className="mt-4" onClick={()=>navigateTo('/register')}><Plus/></Button>
-      </ScrollArea>
+      </ScrollArea></>))}
     </LayoutBase>
   );
 }
