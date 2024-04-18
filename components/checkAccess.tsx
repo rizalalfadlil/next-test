@@ -12,7 +12,7 @@ interface UserInterface {
     name: string;
     type: string;
   }
-export default function checkAccess(type: string | string[], page: React.ReactNode) {
+export default function CheckAccess(type: string | string[], page: React.ReactNode) {
   const [userData, setUserData] = useState("");
   const [isClient, setIsClient] = useState(false);
 

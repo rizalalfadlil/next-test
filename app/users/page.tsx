@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 "use client";
-import checkAccess from "@/components/checkAccess";
+import CheckAccess from "@/components/CheckAccess";
 import LayoutBase from "@/components/layout";
 import { Loading } from "@/components/Loading";
 import {
@@ -72,7 +72,7 @@ export default function Users() {
 
   return (
     <LayoutBase>
-      {checkAccess('admin',(<>
+      {CheckAccess('admin',(<>
         <p className="font-bold text-lg my-8">List of users</p>
       <ScrollArea className="">
         <Table>

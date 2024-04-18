@@ -32,7 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Loading } from "@/components/Loading";
-import checkAccess from "@/components/checkAccess";
+import CheckAccess from "@/components/CheckAccess";
 const showedFormat = "DD MMMM YYYY";
 
 const formatRupiah = (number: number) => {
@@ -164,7 +164,7 @@ export default function OrderList() {
   };
   return (
     <LayoutBase>
-      {checkAccess(
+      {CheckAccess(
         ["kasir", "manajer"],
         <>
           <div>OrderList</div>

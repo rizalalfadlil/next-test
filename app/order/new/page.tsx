@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/Loading";
-import checkAccess from "@/components/checkAccess";
+import CheckAccess from "@/components/CheckAccess";
 
 interface MenuItem {
   nama: string;
@@ -142,7 +142,7 @@ export default function Order() {
 
   return (
     <LayoutBase>
-      {checkAccess(
+      {CheckAccess(
         "kasir",
         <>
           <p className="text-xl font-bold">Buat Pesanan Baru</p>

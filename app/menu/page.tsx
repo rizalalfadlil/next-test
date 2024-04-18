@@ -38,7 +38,7 @@ import { Form, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { Loading } from "@/components/Loading";
-import checkAccess from "@/components/checkAccess";
+import CheckAccess from "@/components/CheckAccess";
 
 const formatRupiah = (number: number) => {
   return Intl.NumberFormat("id-ID", {
@@ -184,7 +184,7 @@ export default function menu() {
   }, []);
   return (
     <LayoutBase>
-      {checkAccess(
+      {CheckAccess(
         "manajer",
         <div className="h-full">
           <div className="grid md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">

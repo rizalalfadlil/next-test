@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Loading } from "@/components/Loading";
-import checkAccess from "@/components/checkAccess";
+import CheckAccess from "@/components/CheckAccess";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -83,7 +83,7 @@ export default function Login() {
   };
   return (
     <LayoutBase>
-      {checkAccess(
+      {CheckAccess(
         "admin",
         <>
           <Form {...form}>

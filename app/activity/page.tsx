@@ -17,7 +17,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/id";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Loading } from "@/components/Loading";
-import checkAccess from "@/components/checkAccess";
+import CheckAccess from "@/components/CheckAccess";
 dayjs.extend(customParseFormat);
 dayjs.locale("id");
 const showedFormat = "DD MMMM YYYY";
@@ -60,7 +60,7 @@ export default function Activities() {
 
   return (
     <LayoutBase>
-      {checkAccess(
+      {CheckAccess(
         ["manajer", "admin"],
         <>
           <p className="font-bold text-lg my-8">Daftar Aktivitas</p>
