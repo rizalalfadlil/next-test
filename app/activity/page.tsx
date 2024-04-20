@@ -45,7 +45,7 @@ export default function Activities() {
   const getActivities = async () => {
     try {
       const res = await axios.get(
-        `${config.db}api/collections/activity/records?page=1&perPage=30`
+        `${config.db}api/collections/activity/records?page=1&perPage=10`
       );
       console.log(res);
       setData(res?.data.items.reverse());

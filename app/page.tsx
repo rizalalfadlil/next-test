@@ -10,6 +10,9 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { string } from "zod";
 import config from "../config.json";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import React from "react";
+import Autoplay from "embla-carousel-autoplay";
 const navigateTo = (url: string) => {
   window.location.href = url;
 };
@@ -104,6 +107,7 @@ export default function Home() {
       </Button>
     </Card>
   ));
+  
   return (
     <LayoutBase>
       <div className="grid gap-4 ">
@@ -142,6 +146,7 @@ interface Menu {
   collectionId: string;
   collectionName: string;
   created: Date;
+  jenis:string;
   foto: string;
   harga: string;
   id: string;
@@ -161,11 +166,68 @@ const GuestPage = () => {
   useEffect(() => {
     getDaftarMenu();
   }, []);
+  const makanan = daftarMenu.filter((d:Menu)=> d.jenis === 'makanan')
+  const minuman = daftarMenu.filter((d:Menu)=> d.jenis === 'minuman')
+  const plugin = React.useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true })
+  )
   return (
     <div className="p-4 grid gap-4">
+      <p className="text-lg font-semibold">Menu unggulan</p>
+      <Carousel
+      plugins={[plugin.current]}
+      className="w-full"
+    >
+      <CarouselContent>
+        {/* {Array.from({ length: 5 }).map((_, index) => (
+          <CarouselItem key={index}>
+            <Card className="aspect-square md:aspect-auto">
+                <CardTitle>{index + 1}</CardTitle>
+              </Card>
+          </CarouselItem>
+        ))} */}
+        {daftarMenu.map((m:Menu, index)=>(
+          <CarouselItem key={index}>
+            <Card>
+            <div
+            style={{
+              backgroundImage: `url('${config.db}api/files/${m.collectionId}/${m.id}/${m.foto}?')`,
+            }}
+            className="rounded-lg border bg-cover bg-no-repeat bg-center h-48 md:h-80"
+          >
+            <div className="w-full h-full relative bg-gradient-to-t from-black/80 rounded-lg">
+              <div className="absolute bottom-0 text-background p-4">
+              <p className="text-xs">{m.nama}</p>
+              <p className="text-lg">{formatRupiah(parseInt(m.harga))}</p>
+              </div>
+            </div>
+          </div>
+            </Card>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+
+    </Carousel>
       <p className="text-lg font-semibold">Makanan</p>
-      <div className="flex flex-row w-full overflow-x-scroll md:overflow-x-hidden md:grid md:grid-cols-3 2xl:grid-cols-6 md:grid-rows-1 overflow-y-hidden gap-4">
-      {daftarMenu.map((m:Menu) => (
+      <div className="flex flex-row w-full overflow-x-scroll md:overflow-x-hidden md:grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 md:grid-rows-1 overflow-y-hidden gap-4">
+      {makanan.map((m:Menu) => (
+        <Card className="flex-1 min-w-full">
+          <div
+            style={{
+              backgroundImage: `url('${config.db}api/files/${m.collectionId}/${m.id}/${m.foto}?')`,
+            }}
+            className="w-full rounded-t-lg border bg-cover bg-no-repeat bg-center h-48"
+          />
+          <CardContent className="p-4">
+            <p className="text-sm">{m.nama}</p>
+            <p className="font-bold">{formatRupiah(parseInt(m.harga))}</p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+    <p className="text-lg font-semibold">Minuman</p>
+      <div className="flex flex-row w-full overflow-x-scroll md:overflow-x-hidden md:grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 md:grid-rows-1 overflow-y-hidden gap-4">
+      {minuman.map((m:Menu) => (
         <Card className="flex-1 min-w-full">
           <div
             style={{
