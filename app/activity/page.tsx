@@ -1,5 +1,5 @@
-/* eslint-disable react/jsx-key */
 "use client";
+/* eslint-disable react/jsx-key */
 import LayoutBase from "@/components/layout";
 import {
   Table,
@@ -30,13 +30,11 @@ import {
 dayjs.extend(customParseFormat);
 dayjs.locale("id");
 const showedFormat = "DD MMMM YYYY";
-const navigateTo = (url: string) => {
-  window.location.href = url;
-};
 export default function Activities() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const queryParameter = new URLSearchParams(window.location.search);
+  const [parameter, setParameter] = useState('');
+  const queryParameter = new URLSearchParams(parameter);
   const pageParam = queryParameter.get("page");
   const page = parseInt(pageParam ? pageParam : "1");
   const [totalPages, setTotalPages] = useState(0);
@@ -67,6 +65,7 @@ export default function Activities() {
     }
   };
   useEffect(() => {
+    setParameter(window.location.search)
     getUsers();
     getActivities();
   }, []);
