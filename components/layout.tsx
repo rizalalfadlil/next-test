@@ -173,13 +173,13 @@ export default function LayoutBase({
                 href="https://bisa-ngopi-docs.vercel.app"
                 className="border-b hover:border-0 me-8"
               >
-                Docs
+                docs
               </a>
               <a
                 href="https://github.com/rizalalfadlil/next-test"
                 className="border-b hover:border-0"
               >
-                Repository 
+                github 
               </a>
             </p>
           </div>

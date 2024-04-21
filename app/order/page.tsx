@@ -148,12 +148,12 @@ export default function OrderList() {
     return formatRupiah(number);
   };
 
-  const getYearIncome = () => {
+  const getDateIncome = () => {
     let number: number = 0;
     const today = new Date();
-    const thisYear = dayjs(today).get("year");
+    const thisDate = dayjs(today).get("date");
     data.map((d: { created: Date; total: string }) => {
-      thisYear === dayjs(d.created).get("year") &&
+      thisDate === dayjs(d.created).get("date") &&
         (number += parseInt(d?.total));
     });
     return formatRupiah(number);
@@ -255,8 +255,8 @@ export default function OrderList() {
               <p className="text-2xl font-bold">{getMonthIncome()}</p>
             </div>
             <div className="border rounded-md p-4 ">
-              <p className="text-lg foont-medium">Pendapatan tahun ini</p>
-              <p className="text-2xl font-bold">{getYearIncome()}</p>
+              <p className="text-lg foont-medium">Pendapatan hari ini</p>
+              <p className="text-2xl font-bold">{getDateIncome()}</p>
             </div>
           </div>
           {parsedUser.type === "kasir" && (
