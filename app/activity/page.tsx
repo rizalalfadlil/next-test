@@ -18,6 +18,15 @@ import "dayjs/locale/id";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Loading } from "@/components/Loading";
 import CheckAccess from "@/components/CheckAccess";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 dayjs.extend(customParseFormat);
 dayjs.locale("id");
 const showedFormat = "DD MMMM YYYY";
@@ -27,7 +36,10 @@ const navigateTo = (url: string) => {
 export default function Activities() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const queryParameter = new URLSearchParams(window.location.search);
+  const pageParam = queryParameter.get("page");
+  const page = parseInt(pageParam ? pageParam : "1");
+  const [totalPages, setTotalPages] = useState(0);
   const getUsers = async () => {
     setLoading(true);
     try {
@@ -45,9 +57,10 @@ export default function Activities() {
   const getActivities = async () => {
     try {
       const res = await axios.get(
-        `${config.db}api/collections/activity/records?page=1&perPage=10`
+        `${config.db}api/collections/activity/records?page=${page}&perPage=10`
       );
-      console.log(res);
+      console.log("activity", res);
+      setTotalPages(res?.data.totalPages);
       setData(res?.data.items.reverse());
     } catch (e) {
       console.log(e);
@@ -88,6 +101,39 @@ export default function Activities() {
               )}
             </TableBody>
           </Table>
+          <Pagination className="pt-4">
+            <PaginationContent>
+              {page > 1 && (
+                <>
+                  <PaginationItem>
+                    <PaginationPrevious href={`/activity?page=${page - 1}`} />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink href={`/activity?page=1`}>1</PaginationLink>
+                  </PaginationItem>
+                </>
+              )}
+
+              <PaginationItem>
+                <PaginationLink isActive href="#">
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+
+              {page < totalPages && (
+                <>
+                  <PaginationItem>
+                    <PaginationLink href={`/activity?page=${totalPages}`}>
+                      {totalPages}
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationNext href={`/activity?page=${page + 1}`} />
+                  </PaginationItem>
+                </>
+              )}
+            </PaginationContent>
+          </Pagination>
           {loading && (
             <div className="flex my-4 justify-center">
               <span className="me-2">memuat data</span>

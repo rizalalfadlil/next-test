@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import config from "../../config.json";
 import axios from "axios";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -69,6 +69,9 @@ export default function Login() {
       setLoading(false);
     }
   };
+  useEffect(()=>{
+    localStorage.removeItem('user')
+  },[])
   return (
     <div className="grid p-4 h-screen w-screen place-items-center">
       <div className="md:border rounded-lg p-4 w-full md:w-1/2 xl:w-1/3">

@@ -39,6 +39,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { Loading } from "@/components/Loading";
 import CheckAccess from "@/components/CheckAccess";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formatRupiah = (number: number) => {
   return Intl.NumberFormat("id-ID", {
@@ -52,6 +59,15 @@ interface UserInterface {
   username: string;
   name: string;
   type: string;
+}
+interface Menu {
+  collectionId: string;
+  created: Date;
+  jenis: string;
+  foto: string;
+  harga: number;
+  id: string;
+  nama: string;
 }
 
 export default function menu() {
@@ -81,9 +97,13 @@ export default function menu() {
   };
   const [nama, setNama] = useState("");
   const [harga, setHarga] = useState("");
+  const [jenis, setJenis] = useState("");
   const [gambar, setGambar] = useState<File | null>(null);
   const [id, setId] = useState("");
 
+  const selectJenis = (value: string) => {
+    setJenis(value);
+  };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFile = event.target.files[0];
@@ -96,6 +116,7 @@ export default function menu() {
     const formData = new FormData();
     formData.append("nama", nama);
     formData.append("harga", harga);
+    formData.append("jenis", jenis);
     gambar !== null && formData.append("foto", gambar);
 
     try {
@@ -151,6 +172,7 @@ export default function menu() {
     const formData = new FormData();
     formData.append("nama", nama);
     formData.append("harga", harga);
+    formData.append("jenis", jenis);
     gambar !== null && formData.append("foto", gambar);
     try {
       const response = await axios.patch(
@@ -182,115 +204,141 @@ export default function menu() {
   useEffect(() => {
     getMenuList();
   }, []);
+
+  const pilihJenis = async (jenis: any) => {
+    try {
+      const response = await axios.get(
+        `${config.db}api/collections/menu/records`
+      );
+      console.log(response);
+      jenis === "semua"
+        ? setData(response.data.items)
+        : setData(response.data.items.filter((d: Menu) => d.jenis === jenis));
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <LayoutBase>
       {CheckAccess(
         "manajer",
         <div className="h-full">
-          <div className="grid md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
-            {data.map(
-              (
-                d: {
-                  nama: string;
-                  harga: number;
-                  id: string;
-                  collectionId: string;
-                  foto: string;
-                },
-                index
-              ) => (
-                <Card>
-                  <div
-                    style={{
-                      backgroundImage: `url('${config.db}api/files/${d.collectionId}/${d.id}/${d.foto}?')`,
-                    }}
-                    className="w-full border bg-cover bg-no-repeat bg-center h-48"
-                  />
-                  <div className="p-2">
-                    <p className="font-bold text-xl">{d.nama}</p>
-                    <p className="text-sm">{formatRupiah(d.harga)}</p>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 p-2">
-                    <Sheet>
-                      <SheetTrigger asChild>
-                        <Button
-                          onClick={() => {
-                            setNama(d.nama),
-                              setHarga(d.harga.toString()),
-                              setGambar(null),
-                              setId(d.id);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                      </SheetTrigger>
-                      <SheetContent>
-                        <SheetHeader>
-                          <SheetTitle>Edit {nama}</SheetTitle>
-                          <SheetDescription>id : {id}</SheetDescription>
-                        </SheetHeader>
-                        <form className="grid gap-4 mt-4" onSubmit={updateData}>
-                          <FormItem>
-                            <Label>nama</Label>
-                            <Input
-                              type="text"
-                              name="nama"
-                              id="nama"
-                              value={nama}
-                              onChange={(event) => {
-                                setNama(event.target.value);
-                              }}
-                            />
-                          </FormItem>
-                          <FormItem>
-                            <Label>harga</Label>
-                            <Input
-                              type="number"
-                              name="harga"
-                              id="harga"
-                              value={harga}
-                              onChange={(event) => {
-                                setHarga(event.target.value);
-                              }}
-                            />
-                          </FormItem>
-                          <FormItem>
-                            <Label>gambar</Label>
-                            <Input
-                              type="file"
-                              accept=".jpg,.jpeg,.png"
-                              onChange={handleFileChange}
-                              name="gambar"
-                              id="gambar"
-                            />
-                          </FormItem>
-                          <SheetClose asChild>
-                            <Button type="submit">Save changes</Button>
-                          </SheetClose>
-                        </form>
-                        <SheetFooter></SheetFooter>
-                      </SheetContent>
-                    </Sheet>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="destructive">Hapus</Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Hapus Data?</AlertDialogTitle>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Batal</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => deleteData(d.id)}>
-                            Hapus
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                </Card>
-              )
-            )}
+          <Select onValueChange={pilihJenis}>
+            <SelectTrigger>
+              <SelectValue placeholder="pilih jenis" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="semua">Semua</SelectItem>
+              <SelectItem value="makanan">Makanan</SelectItem>
+              <SelectItem value="minuman">Minuman</SelectItem>
+            </SelectContent>
+          </Select>
+          <div className="grid md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mt-4 gap-2">
+            {data.map((d: Menu, index) => (
+              <Card>
+                <div
+                  style={{
+                    backgroundImage: `url('${config.db}api/files/${d.collectionId}/${d.id}/${d.foto}?')`,
+                  }}
+                  className="w-full border bg-cover bg-no-repeat rounded-t-lg bg-center h-48"
+                />
+                <div className="p-2">
+                  <p className="font-bold text-xl">{d.nama}</p>
+                  <p className="text-sm">{formatRupiah(d.harga)}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-2 p-2">
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button
+                        onClick={() => {
+                          setNama(d.nama),
+                            setHarga(d.harga.toString()),
+                            setGambar(null),
+                            setId(d.id);
+                            setJenis(d.jenis)
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                      <SheetHeader>
+                        <SheetTitle>Edit {nama}</SheetTitle>
+                        <SheetDescription>id : {id}</SheetDescription>
+                      </SheetHeader>
+                      <form className="grid gap-4 mt-4" onSubmit={updateData}>
+                        <FormItem>
+                          <Label>nama</Label>
+                          <Input
+                            type="text"
+                            name="nama"
+                            id="nama"
+                            value={nama}
+                            onChange={(event) => {
+                              setNama(event.target.value);
+                            }}
+                          />
+                        </FormItem>
+                        <FormItem>
+                          <Label>harga</Label>
+                          <Input
+                            type="number"
+                            name="harga"
+                            id="harga"
+                            value={harga}
+                            onChange={(event) => {
+                              setHarga(event.target.value);
+                            }}
+                          />
+                        </FormItem>
+                        <FormItem>
+                          <Label>Jenis</Label>
+                          <Select onValueChange={selectJenis} value={jenis}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="pilih jenis" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="makanan">Makanan</SelectItem>
+                              <SelectItem value="minuman">Minuman</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormItem>
+                        <FormItem>
+                          <Label>gambar</Label>
+                          <Input
+                            type="file"
+                            accept=".jpg,.jpeg,.png"
+                            onChange={handleFileChange}
+                            name="gambar"
+                            id="gambar"
+                          />
+                        </FormItem>
+                        <SheetClose asChild>
+                          <Button type="submit">Simpan</Button>
+                        </SheetClose>
+                      </form>
+                      <SheetFooter></SheetFooter>
+                    </SheetContent>
+                  </Sheet>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive">Hapus</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Hapus Data?</AlertDialogTitle>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Batal</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => deleteData(d.id)}>
+                          Hapus
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </Card>
+            ))}
           </div>
           {loading && (
             <div className="flex justify-center">
@@ -339,6 +387,18 @@ export default function menu() {
                   />
                 </FormItem>
                 <FormItem>
+                  <Label>Jenis</Label>
+                  <Select onValueChange={selectJenis}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="pilih jenis" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="makanan">Makanan</SelectItem>
+                      <SelectItem value="minuman">Minuman</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+                <FormItem>
                   <Label>gambar</Label>
                   <Input
                     type="file"
@@ -349,7 +409,17 @@ export default function menu() {
                   />
                 </FormItem>
                 <SheetClose asChild>
-                  <Button type="submit">Save changes</Button>
+                  <Button
+                    type="submit"
+                    disabled={
+                      nama == null ||
+                      harga == null ||
+                      jenis == null ||
+                      gambar == null
+                    }
+                  >
+                    Tambah data
+                  </Button>
                 </SheetClose>
               </form>
               <SheetFooter></SheetFooter>

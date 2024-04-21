@@ -13,9 +13,11 @@ import { Separator } from "./ui/separator";
 import { Badge } from "./ui/badge";
 import {
   Activity,
+  BookUser,
   Coffee,
   LogIn,
   Menu,
+  MessageSquareShare,
   Moon,
   NotebookTabs,
   Sun,
@@ -60,6 +62,11 @@ const managerPage = [
     icon: <NotebookTabs />,
   },
   {
+    title: "Feedback",
+    target: "feedback/result",
+    icon: <BookUser />,
+  },
+  {
     title: "Log-out",
     target: "login",
     icon: <LogIn />,
@@ -79,9 +86,14 @@ const kasirPage = [
 ];
 const guestPage = [
   {
-    title: "Login",
+    title: "Anda staff? klik disini",
     target: "login",
     icon: <LogIn />,
+  },
+  {
+    title: "Anda memiliki saran? klik disini",
+    target: "feedback",
+    icon: <MessageSquareShare />,
   },
 ];
 
@@ -120,8 +132,8 @@ export default function LayoutBase({
   else showedPage = guestPage;
 
   const navigationButtons = showedPage.map((p) => (
-    <Button variant="link" onClick={() => navigateTo(`/${p.target}`)}>
-      {p.icon} <span className="ms-4">{p.title}</span>
+    <Button variant="link" className="py-8" onClick={() => navigateTo(`/${p.target}`)}>
+      {p.icon} <span className="ms-4 text-wrap">{p.title}</span>
     </Button>
   ));
 
