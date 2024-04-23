@@ -34,7 +34,7 @@ export default function CheckAccess(type: string | string[], page: React.ReactNo
 
   return isClient && (
     hasAccess() ? page : (<div className='w-full h-full grid gap-2 place-content-center text-center text-red-700'>
-        <div><p className='text-5xl'>403</p><p>unauthorized</p></div>
+        <div><p className='text-5xl'>403</p><p>forbidden</p></div>
         <div className='text-black text-lg py-8'><p>anda tidak memiliki akses ke halaman ini</p></div>
         <div className='grid md:grid-cols-2 gap-2'><Button onClick={()=>navigateTo('/login')}>Login</Button><Button onClick={()=>navigateTo('/')} variant="secondary">Halaman Utama</Button></div>
     </div>)
