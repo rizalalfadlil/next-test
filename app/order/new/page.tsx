@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/Loading";
 import CheckAccess from "@/components/CheckAccess";
+import { Plus } from "lucide-react";
 
 interface MenuItem {
   nama: string;
@@ -39,6 +40,7 @@ interface UserInterface {
 }
 export default function Order() {
   const [namaPemesan, setNamaPemesan] = useState("");
+  const [jumlahBayar, setJumlahBayar] = useState(0)
   const [loading, setLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [daftarMenu, setDaftarMenu] = useState<MenuItem[]>([]);
@@ -90,7 +92,7 @@ export default function Order() {
 
   const updateRincianPesanan = () => {
     const rincian = pesanan
-      .map((item) => `${item.nama} × ${item.jumlah}`)
+      .map((item) => `${item.nama} ×${item.jumlah} (${item.harga * item.jumlah})`)
       .join(", ");
     setRincianPesanan(rincian);
   };
@@ -106,7 +108,9 @@ export default function Order() {
       pesanan: rincianPesanan,
       total: hitungTotalHarga(),
       userId: parsedUser.id,
+      bayar:jumlahBayar
     };
+    
     try {
       setBtnLoading(true);
       const res = await axios.post(
@@ -132,6 +136,7 @@ export default function Order() {
         }
       );
       console.log(res2);
+      window.location.href = `/order/${res.data.id}`
     } catch (e) {
       console.error(e);
     } finally {
@@ -139,7 +144,7 @@ export default function Order() {
     }
     setPesanan([]);
   };
-
+  const kembalian = (hitungTotalHarga() - jumlahBayar) *-1
   return (
     <LayoutBase>
       {CheckAccess(
@@ -157,7 +162,7 @@ export default function Order() {
             </div>
             <div>
               <Label className="text-lg pb-4">Daftar menu</Label>
-              <div className="grid md:grid-cols-4 gap-4">
+              <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
                 {daftarMenu.map((m: MenuItem) => (
                   <Card key={m.nama} className="p-4">
                     <CardTitle>{m.nama}</CardTitle>
@@ -165,10 +170,11 @@ export default function Order() {
                       {formatRupiah(m.harga)}
                     </CardDescription>
                     <Button
+                     className="w-full"
                       onClick={() => tambahPesanan(m)}
                       disabled={pesanan.some((item) => item.nama === m.nama)}
                     >
-                      Tambahkan
+                      Tambah
                     </Button>
                   </Card>
                 ))}
@@ -220,9 +226,22 @@ export default function Order() {
                 Total Harga : {formatRupiah(hitungTotalHarga())}
               </Label>
             </div>
+            <div>
+              <Label className="text-lg pb-4">Total Bayar</Label>
+              <Input
+                type="number"
+                value={jumlahBayar}
+                onChange={(e) => setJumlahBayar(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label className={`text-lg pb-4 ${kembalian < 0 && 'text-red-500'}`}>
+                {(jumlahBayar !== 0 && kembalian !== 0) && (<>Kembali : {formatRupiah(kembalian) + " " + (kembalian < 0 ? '(uang tidak cukup)' : '')}</>)}
+              </Label>
+            </div>
             <Button
               onClick={buatPesanan}
-              disabled={pesanan.length == 0 || namaPemesan == ""}
+              disabled={pesanan.length == 0 || namaPemesan == "" || jumlahBayar < hitungTotalHarga()}
             >
               {btnLoading ? <Loading /> : "Buat Pesanan"}
             </Button>

@@ -139,7 +139,8 @@ export default function LayoutBase({
 
   return isClient && (
     <div className="md:grid grid-cols-10" suppressHydrationWarning>
-      <div className="col-span-2 hidden md:block border-e">
+      <div className="col-span-2 hidden md:block border-e relative">
+        <div className="sticky top-0">
         <p className="font-bold text-3xl my-4 px-4 pt-4">
           <a href="/" className="flex justify-center items-center"><div className="size-20 bg-contain bg-center bg-no-repeat" style={{backgroundImage:"url('./logo.png')"}}></div><span className="mt-3 ms-4">Bisa Ngopi</span></a>
         </p>
@@ -163,9 +164,12 @@ export default function LayoutBase({
             </Button> */}
         </div>
       </div>
+        </div>
       <div className="h-screen col-span-8 mt-16 md:mt-0">
-        <div className="flex flex-col h-full overflow-y-hidden">
-          <div className="grow md:p-4 p-2 bg-muted"><div className="md:p-4 p-2 bg-background border rounded-lg">{children}</div></div>
+        <div className="flex flex-col h-full">
+          <div className="grow md:p-4 p-2 bg-muted">
+            <div className="md:p-4 p-2 bg-background border rounded-lg">{children}
+            </div></div>
           <div className="h-48 flex-none grid bg-primary text-white text-center align-middle text-lg p-8">
             <p>2024 - Hafidz Rizal Al-Fadlil</p>
             <p className="">

@@ -34,6 +34,7 @@ export default function page({ params }: any) {
     pelanggan: "",
     pesanan: "",
     total: 0,
+    bayar:0,
     userId: "",
     created: "",
   });
@@ -78,15 +79,15 @@ export default function page({ params }: any) {
               </p>
             <div>
               <Label className="text-xs font-bold">id</Label>
-              <p className="text-xl">{data.id}</p>
+              <p className="text-md">{data.id}</p>
             </div>
             <div>
               <Label className="text-xs font-bold">nama pelanggan</Label>
-              <p className="text-xl">{data.pelanggan}</p>
+              <p className="text-md">{data.pelanggan}</p>
             </div>
             <div>
               <Label className="text-xs font-bold">pesanan</Label>
-              <Table className="text-xl border">
+              <Table className="text-sm border">
                 <TableHeader >
                   <TableRow>
                     <TableHead className="w-[100px]">No</TableHead>
@@ -98,9 +99,8 @@ export default function page({ params }: any) {
                   {data.pesanan.split(',').map((p, index)=>(
                     <TableRow key={index}>
                       <TableCell>{index + 1}</TableCell>
-                      {p.split(' × ').map((r, index)=>(
-                        <TableCell key={index}>{r}</TableCell>
-                      ))}
+                      <TableCell>{p.split('(')[0]}</TableCell>
+                      <TableCell>{formatRupiah(parseInt(p.split('(')[1]))}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -108,11 +108,19 @@ export default function page({ params }: any) {
             </div>
             <div>
               <Label className="text-xs font-bold">total</Label>
-              <p className="text-xl">{formatRupiah(data.total)}</p>
+              <p className="text-md">{formatRupiah(data.total)}</p>
+            </div>
+            <div>
+              <Label className="text-xs font-bold">jumlah bayar</Label>
+              <p className="text-md">{formatRupiah(data.bayar)}</p>
+            </div>
+            <div>
+              <Label className="text-xs font-bold">kembali</Label>
+              <p className="text-md">{formatRupiah(data.bayar - data.total)}</p>
             </div>
             <div>
               <Label className="text-xs font-bold">tanggal</Label>
-              <p className="text-xl">{data.created.slice(0, -5)}</p>
+              <p className="text-md">{data.created.slice(0, -5)}</p>
             </div>
           </div>
           <ReactToPrint

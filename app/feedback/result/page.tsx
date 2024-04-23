@@ -5,12 +5,13 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import config from "../../../config.json";
 import { Card, CardDescription, CardTitle } from '@/components/ui/card'
+import { Loading } from '@/components/Loading'
 interface Fedback{
     email:string,
     saran:string
 }
 export default function Page() {
-    const [data, setData] = useState([])
+    const [data, setData] = useState(null)
     const getData = async () =>{
         try{
             const response = await axios.get(`${config.db}api/collections/feedback/records`)
@@ -29,12 +30,12 @@ export default function Page() {
             <div className='p-4 w-full'>
                 Feedback
                 <div className='py-4 grid gap-4 md:grid-cols-2 2xl:grid-cols-4'>
-                    {data.map((d:Fedback, index)=>(
+                    {data !== null? data.map((d:Fedback, index)=>(
                         <Card key={index} className='overflow-scroll h-48 relative'>
                             <CardTitle className='text-xs p-4 bg-gradient-to-b from-white to-white/50 font-medium sticky top-0 left-0'>{d.email}</CardTitle>
                             <CardDescription className='p-4 text-md'>{d.saran}</CardDescription>
                         </Card>
-                    ))}
+                    )) : <Loading/>}
                 </div>
             </div>
         ))}
