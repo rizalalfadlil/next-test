@@ -30,13 +30,10 @@ import {
 dayjs.extend(customParseFormat);
 dayjs.locale("id");
 const showedFormat = "DD MMMM YYYY";
-export default function Activities() {
+export default function Activities({ params }: any) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [parameter, setParameter] = useState('');
-  const queryParameter = new URLSearchParams(parameter);
-  const pageParam = queryParameter.get("page");
-  const page = parseInt(pageParam ? pageParam : "1");
+  const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const getUsers = async () => {
     setLoading(true);
@@ -52,22 +49,26 @@ export default function Activities() {
     }
   };
 
-  const getActivities = async () => {
+  const getActivities = async (page:string|number) => {
     try {
       const res = await axios.get(
-        `${config.db}api/collections/activity/records?page=${page}&perPage=10`
+        `${config.db}api/collections/activity/records?page=${page}&perPage=10&sort=-created`
       );
       console.log("activity", res);
       setTotalPages(res?.data.totalPages);
-      setData(res?.data.items.reverse());
+      setData(res?.data.items);
     } catch (e) {
       console.log(e);
     }
   };
   useEffect(() => {
-    setParameter(window.location.search)
+    const parameter = window.location.search;
+    const queryParameter = new URLSearchParams(parameter);
+    const pageParam = queryParameter.get("page");
+    setPage(parseInt(pageParam ? pageParam : "1"));
     getUsers();
-    getActivities();
+    getActivities(pageParam ? pageParam : "1");
+    console.log('page : ' +  pageParam)
   }, []);
 
   return (

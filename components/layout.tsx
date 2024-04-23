@@ -164,7 +164,7 @@ export default function LayoutBase({
         </div>
       </div>
       <div className="h-screen col-span-8 mt-16 md:mt-0">
-        <div className="flex flex-col h-full overflow-y-scroll">
+        <div className="flex flex-col h-full overflow-y-hidden">
           <div className="grow md:p-8 p-4">{children}</div>
           <div className="h-48 flex-none grid bg-primary text-white text-center align-middle text-lg p-8">
             <p>2024 - Hafidz Rizal Al-Fadlil</p>
