@@ -73,8 +73,8 @@ export default function Login() {
     localStorage.removeItem('user')
   },[])
   return (
-    <div className="grid p-4 h-screen w-screen place-items-center">
-      <div className="md:border rounded-lg p-4 w-full md:w-1/2 xl:w-1/3">
+    <div className="grid p-4 h-screen w-screen place-items-center md:bg-muted">
+      <div className="md:border rounded-lg p-4 w-full md:w-1/2 md:shadow xl:w-1/3 bg-background">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <p className="font-semibold">Login</p>

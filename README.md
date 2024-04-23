@@ -2,13 +2,6 @@
 <h3 align="center">Dokumentasi</h3>
 <p align="center" style="background-color:#910a00;color:white; border-radius:2px">Hafidz Rizal Al-Fadlil</p>
 
-## daftar isi
-
-1. daftar isi
-2. permulaan
-   1. mengunakan secara online
-   2. menggunakan secara lokal
-
 # Permulaan
 
 ## 1. Menggunakan aplikasi langsung secara online
