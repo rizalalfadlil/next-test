@@ -137,7 +137,7 @@ export default function LayoutBase({
     </Button>
   ));
 
-  return isClient && (
+  return isClient ? (
     <div className="md:grid grid-cols-10" suppressHydrationWarning>
       <div className="col-span-2 hidden md:block border-e relative">
         <div className="sticky top-0">
@@ -203,5 +203,5 @@ export default function LayoutBase({
         </Accordion>
       </div>
     </div>
-  );
+  ) : (<p>terjadi kesalahan</p>)
 }

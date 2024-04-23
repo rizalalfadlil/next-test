@@ -97,7 +97,7 @@ export default function OrderList() {
       setLoading(false);
     }
   };
-  const pilihTanggalLaporan = (tgl) => {
+  const pilihTanggalLaporan = (tgl: React.SetStateAction<Date | undefined>) => {
     console.log(tgl);
     setTglLaporan(tgl);
   };
@@ -301,7 +301,7 @@ function Laporan({
   getMonthIncome,
   showedFormat,
   getDateIncome,
-}) {
+}:any) {
   const printRef = useRef(null)
   return (
     <>
