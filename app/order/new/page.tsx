@@ -231,7 +231,7 @@ export default function Order() {
               <Input
                 type="number"
                 value={jumlahBayar}
-                onChange={(e) => setJumlahBayar(e.target.value)}
+                onChange={(e) => setJumlahBayar(parseInt(e.target.value))}
               />
             </div>
             <div>
