@@ -24,6 +24,7 @@ import {
   User,
 } from "lucide-react";
 import { ScrollArea } from "./ui/scroll-area";
+import { Loading } from "./Loading";
 
 const navigateTo = (url: string) => {
   window.location.href = url;
@@ -118,12 +119,11 @@ export default function LayoutBase({
     setUserData(user);
   }, []);
 
-  const [isClient, setIsClient] = useState(false)
- 
+  const [isClient, setIsClient] = useState(false);
+
   useEffect(() => {
-    setIsClient(true)
-  }, [])
-  
+    setIsClient(true);
+  }, []);
 
   let showedPage;
   if (parsedUser.type === "admin") showedPage = adminPage;
@@ -132,7 +132,11 @@ export default function LayoutBase({
   else showedPage = guestPage;
 
   const navigationButtons = showedPage.map((p) => (
-    <Button variant="link" className="py-8 content-start lg:border hover:bg-muted" onClick={() => navigateTo(`/${p.target}`)}>
+    <Button
+      variant="link"
+      className="py-8 content-start lg:border hover:bg-muted"
+      onClick={() => navigateTo(`/${p.target}`)}
+    >
       {p.icon} <span className="ms-4 text-wrap">{p.title}</span>
     </Button>
   ));
@@ -141,15 +145,21 @@ export default function LayoutBase({
     <div className="md:grid grid-cols-10" suppressHydrationWarning>
       <div className="col-span-2 hidden md:block border-e relative">
         <div className="sticky top-0">
-        <p className="font-bold text-3xl my-4 px-4 pt-4">
-          <a href="/" className="flex justify-center items-center"><div className="size-20 bg-contain bg-center bg-no-repeat" style={{backgroundImage:"url('./logo.png')"}}></div><span className="mt-3 ms-4">Bisa Ngopi</span></a>
-        </p>
-        <div className="px-4 pb-4 grid place-content-center">
-          {parsedUser.type && (<Badge>{parsedUser.type}</Badge>)}
-        </div>
-        <Separator />
-        <div className="p-4 grid gap-2">
-          {navigationButtons}
+          <p className="font-bold text-3xl my-4 px-4 pt-4">
+            <a href="/" className="flex justify-center items-center">
+              <div
+                className="size-20 bg-contain bg-center bg-no-repeat"
+                style={{ backgroundImage: "url('./logo.png')" }}
+              ></div>
+              <span className="mt-3 ms-4">Bisa Ngopi</span>
+            </a>
+          </p>
+          <div className="px-4 pb-4 grid place-content-center">
+            {parsedUser.type && <Badge>{parsedUser.type}</Badge>}
+          </div>
+          <Separator />
+          <div className="p-4 grid gap-2">
+            {navigationButtons}
             {/* <Button
               variant="link"
               onClick={() => {
@@ -162,18 +172,20 @@ export default function LayoutBase({
                 {currentTheme === "light" ? "Mode gelap" : "mode Terang"}
               </span>
             </Button> */}
+          </div>
         </div>
       </div>
-        </div>
       <div className="h-screen col-span-8 mt-16 md:mt-0">
         <div className="flex flex-col h-full">
           <div className="grow md:p-4 p-2 bg-muted">
-            <div className="md:p-4 p-2 bg-background border rounded-lg">{children}
-            </div></div>
+            <div className="md:p-4 p-2 bg-background border rounded-lg">
+              {children}
+            </div>
+          </div>
           <div className="h-48 flex-none grid bg-primary text-white text-center align-middle text-lg p-8">
             <p>2024 - Hafidz Rizal Al-Fadlil</p>
             <p className="">
-            <a
+              <a
                 href="https://bisa-ngopi-docs.vercel.app"
                 className="border-b hover:border-0 me-8"
               >
@@ -183,7 +195,7 @@ export default function LayoutBase({
                 href="https://github.com/rizalalfadlil/next-test"
                 className="border-b hover:border-0"
               >
-                github 
+                github
               </a>
             </p>
           </div>
@@ -203,5 +215,7 @@ export default function LayoutBase({
         </Accordion>
       </div>
     </div>
-  ) : (<p>terjadi kesalahan</p>)
+  ) : (
+    <div className="w-screen h-screen grid place-content-center"><div className="grid justify-items-center"><Loading/><p>memuat halaman</p></div></div>
+  );
 }

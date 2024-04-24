@@ -11,6 +11,7 @@ import config from "../../config.json";
 import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Loading } from '@/components/Loading'
 const formSchema = z.object({
     email: z.string(),
     saran: z.string()
@@ -22,6 +23,7 @@ interface Saran{
 }
 export default function Page() {
     const [finish, setFinish] = useState(false)
+    const [loading, setLoading] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,6 +33,7 @@ export default function Page() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true)
     try{
         const response = await axios.post(`${config.db}api/collections/feedback/records`, values, {
             headers:{
@@ -38,10 +41,12 @@ export default function Page() {
             }
         })
         console.log(response)
+        
     }catch(e){
         console.error(e)
     }finally{
         setFinish(true)
+        setLoading(false)
     }
   }
   return (
@@ -74,7 +79,7 @@ export default function Page() {
                      <Textarea placeholder='tulis saran anda disini' className='resize-none line-clamp-5' {...field}/>
                  </FormItem>
                   )}/>
-                 <Button className='mt-4' type='submit'>Kirim</Button>
+                 <Button className='mt-4' type='submit'>{loading?<Loading/>:'Kirim'}</Button>
                 </form>
              </Form>
             )}

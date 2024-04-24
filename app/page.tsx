@@ -204,7 +204,7 @@ const GuestPage = () => {
           </div>
             </Card>
           </CarouselItem>
-        ))}
+        )).slice(0,3)}
       </CarouselContent>
 
     </Carousel>
