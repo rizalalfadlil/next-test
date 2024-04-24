@@ -177,8 +177,8 @@ export default function LayoutBase({
       </div>
       <div className="h-screen col-span-8 mt-16 md:mt-0">
         <div className="flex flex-col h-full">
-          <div className="grow md:p-4 p-2 bg-muted">
-            <div className="md:p-4 p-2 bg-background border rounded-lg">
+          <div className="grow md:p-4 p-2 bg-muted flex">
+            <div className="md:p-4 p-2 grow bg-background border rounded-lg">
               {children}
             </div>
           </div>
