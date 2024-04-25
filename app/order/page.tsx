@@ -47,6 +47,8 @@ import {
 import { Loading } from "@/components/Loading";
 import CheckAccess from "@/components/CheckAccess";
 import ReactToPrint from "react-to-print";
+import { DateRange } from "react-day-picker";
+import KopSurat from "@/components/kopSurat";
 const showedFormat = "DD MMMM YYYY";
 
 const formatRupiah = (number: number) => {
@@ -77,7 +79,10 @@ export default function OrderList() {
 
   const [data, setData] = useState([]);
   const [date, setDate] = useState<Date | undefined>(undefined);
-  const [tglLaporan, setTglLaporan] = useState<Date>();
+  const [tglLaporan, setTglLaporan] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: new Date(),
+  });
   const [users, setUsers] = useState([]);
   const [filterDate, setFilterDate] = useState([]);
   const [filterUser, setFilterUser] = useState([]);
@@ -97,7 +102,7 @@ export default function OrderList() {
       setLoading(false);
     }
   };
-  const pilihTanggalLaporan = (tgl: React.SetStateAction<Date | undefined>) => {
+  const pilihTanggalLaporan = (tgl: React.SetStateAction<DateRange | undefined>) => {
     console.log(tgl);
     setTglLaporan(tgl);
   };
@@ -159,7 +164,7 @@ export default function OrderList() {
   const getMonthIncome = () => {
     let number: number = 0;
     const today = new Date();
-    const thisMonth = dayjs(tglLaporan).get("month");
+    const thisMonth = dayjs(tglLaporan?.from).get("month");
     data.map((d: { created: Date; total: string }) => {
       thisMonth === dayjs(d.created).get("month") &&
         (number += parseInt(d?.total));
@@ -169,11 +174,14 @@ export default function OrderList() {
 
   const getDateIncome = () => {
     let number: number = 0;
-    const today = new Date();
-    const thisDate = dayjs(tglLaporan).get("date");
+    const fromDate = tglLaporan?.from?.getTime();
+    const toDate = tglLaporan?.to?.getTime();
+
     data.map((d: { created: Date; total: string }) => {
-      thisDate === dayjs(d.created).get("date") &&
-        (number += parseInt(d?.total));
+      const comparedDate = new Date(d.created).getTime()
+      if (comparedDate > (fromDate !== undefined && fromDate) && comparedDate < (toDate !== undefined && toDate)) {
+        number += parseInt(d?.total);
+      }
     });
     return formatRupiah(number);
   };
@@ -272,7 +280,7 @@ export default function OrderList() {
               <Loading />
             </div>
           )}
-          
+
           {parsedUser.type === "kasir" && (
             <Button className="mt-4" onClick={() => navigateTo("/order/new")}>
               Buat pesanan baru
@@ -281,14 +289,14 @@ export default function OrderList() {
         </>
       )}
       <Laporan
-            cn={cn}
-            tglLaporan={tglLaporan}
-            format={format}
-            pilihTanggalLaporan={pilihTanggalLaporan}
-            getMonthIncome={getMonthIncome}
-            showedFormat={showedFormat}
-            getDateIncome={getDateIncome}
-          />
+        cn={cn}
+        tglLaporan={tglLaporan}
+        format={format}
+        pilihTanggalLaporan={pilihTanggalLaporan}
+        getMonthIncome={getMonthIncome}
+        showedFormat={showedFormat}
+        getDateIncome={getDateIncome}
+      />
     </LayoutBase>
   );
 }
@@ -301,11 +309,11 @@ function Laporan({
   getMonthIncome,
   showedFormat,
   getDateIncome,
-}:any) {
-  const printRef = useRef(null)
+}: any) {
+  const printRef = useRef(null);
   return (
     <>
-     <p className="mt-8">Laporan Pendapatan</p>
+      <p className="mt-8">Laporan Pendapatan</p>
       <div className="flex gap-4">
         <Popover>
           <PopoverTrigger asChild>
@@ -318,7 +326,7 @@ function Laporan({
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
               {tglLaporan ? (
-                format(tglLaporan, "PPP")
+                format(tglLaporan?.from, "PPP")
               ) : (
                 <span>Pilih tanggal</span>
               )}
@@ -326,52 +334,61 @@ function Laporan({
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
             <Calendar
-              mode="single"
+              initialFocus
+              mode="range"
+              defaultMonth={tglLaporan?.from}
               selected={tglLaporan}
               onSelect={pilihTanggalLaporan}
-              initialFocus
+              numberOfMonths={2}
             />
           </PopoverContent>
         </Popover>
         <Drawer>
-        <DrawerTrigger><Button>tampilan cetak</Button></DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>cetak laporan</DrawerTitle>
-            <div className="text-start p-4" ref={printRef}>
-              <p className="text-2xl font-bold">Bisa Ngopi</p>
-              <hr  className="border-2 border-primary my-4"/>
-              <p>{dayjs(tglLaporan).format(showedFormat)}</p>
+          <DrawerTrigger>
+            <Button>tampilan cetak</Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>cetak laporan</DrawerTitle>
+              <div className="text-start p-4" ref={printRef}>
+                <KopSurat/>
+                <p>{dayjs(tglLaporan?.from).format(showedFormat) + " - " + dayjs(tglLaporan?.to).format(showedFormat)}</p>
 
-              <div className="mt-4">
-                <p className="text-sm">Pendapatan harian</p>
-                <p className="text-xl font-bold">{getDateIncome()}</p>
+                <div className="mt-4">
+                  <p className="text-sm">Pendapatan harian</p>
+                  <p className="text-xl font-bold">{getDateIncome()}</p>
+                </div>
+                <div className="mt-4">
+                  <p className="text-sm">Pendapatan bulan {dayjs(tglLaporan?.from).format('MMMM')}</p>
+                  <p className="text-xl font-bold">{getMonthIncome()}</p>
+                </div>
               </div>
-              <div className="mt-4">
-                <p className="text-sm">Pendapatan bulanan</p>
-                <p className="text-xl font-bold">{getMonthIncome()}</p>
-              </div>
-            </div>
-          </DrawerHeader>
-          <DrawerFooter>
-            <DrawerClose><ReactToPrint
-            trigger={()=>(<Button className="w-full">cetak</Button>)}
-            content={()=>printRef.current}/>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+            </DrawerHeader>
+            <DrawerFooter>
+              <DrawerClose>
+                <ReactToPrint
+                  trigger={() => <Button className="w-full">cetak</Button>}
+                  content={() => printRef.current}
+                />
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </div>
       <div className="grid md:grid-cols-2 w-full gap-4 mb-8">
         <div className="border rounded-md p-4 ">
           <p className="text-lg foont-medium">
-            Pendapatan bulanan : {dayjs(tglLaporan).format("MMMM YYYY")}
+            Pendapatan bulanan :{" "}
+            {dayjs(tglLaporan?.from).format("MMMM YYYY")}
           </p>
           <p className="text-2xl font-semibold">{getMonthIncome()}</p>
         </div>
         <div className="border rounded-md p-4 ">
           <p className="text-lg foont-medium">
-            Pendapatan harian : {dayjs(tglLaporan).format(showedFormat)}
+            Pendapatan harian :{" "}
+            {dayjs(tglLaporan?.from).format(showedFormat) +
+              " - " +
+              dayjs(tglLaporan?.to).format(showedFormat)}
           </p>
           <p className="text-2xl font-semibold">{getDateIncome()}</p>
         </div>

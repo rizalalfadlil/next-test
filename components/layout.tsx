@@ -134,7 +134,7 @@ export default function LayoutBase({
   const navigationButtons = showedPage.map((p) => (
     <Button
       variant="link"
-      className="py-8 content-start lg:border hover:bg-muted"
+      className="py-8 content-start lg:border hover:bg-muted bg-background"
       onClick={() => navigateTo(`/${p.target}`)}
     >
       {p.icon} <span className="ms-4 text-wrap">{p.title}</span>
@@ -149,7 +149,7 @@ export default function LayoutBase({
             <a href="/" className="flex justify-center items-center">
               <div
                 className="size-20 bg-contain bg-center bg-no-repeat"
-                style={{ backgroundImage: "url('./logo.png')" }}
+                style={{ backgroundImage: "url('https://raw.githubusercontent.com/rizalalfadlil/next-test/master/public/logo.png')" }}
               ></div>
               <span className="mt-3 ms-4">Bisa Ngopi</span>
             </a>
@@ -158,7 +158,7 @@ export default function LayoutBase({
             {parsedUser.type && <Badge>{parsedUser.type}</Badge>}
           </div>
           <Separator />
-          <div className="p-4 grid gap-2">
+          <div className="p-4 grid gap-2 bg-muted/20">
             {navigationButtons}
             {/* <Button
               variant="link"
@@ -182,7 +182,7 @@ export default function LayoutBase({
               {children}
             </div>
           </div>
-          <div className="h-48 flex-none grid bg-primary text-white text-center align-middle text-lg p-8">
+          <div className="h-48 flex-none grid bg-primary text-primary-foreground text-center align-middle text-lg p-8">
             <p>2024 - Hafidz Rizal Al-Fadlil</p>
             <p className="">
               <a

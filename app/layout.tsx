@@ -20,15 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={quicksand.className}>
-        {/* <ThemeProvider
+        <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
           {children}
-        </ThemeProvider> */}
-        {children}
+        </ThemeProvider>
       </body>
     </html>
   );

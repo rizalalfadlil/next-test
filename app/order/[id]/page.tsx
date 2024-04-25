@@ -19,6 +19,7 @@ import CheckAccess from "@/components/CheckAccess";
 import { Button } from "@/components/ui/button";
 import ReactToPrint from "react-to-print";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import KopSurat from "@/components/kopSurat";
 
 const formatRupiah = (number: number) => {
   return Intl.NumberFormat("id-ID", {
@@ -74,9 +75,7 @@ export default function page({ params }: any) {
           </Breadcrumb>
           <div className="grid gap-4">
           <div ref={printRef} className="p-4 ">
-          <p className="text-4xl md:text-6xl pb-4 border-b-2 border-primary mb-8 font-medium tracking-wide mt-3">
-                Bisa Ngopi
-              </p>
+          <KopSurat/>
             <div>
               <Label className="text-xs font-bold">id</Label>
               <p className="text-md">{data.id}</p>
