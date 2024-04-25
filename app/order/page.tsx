@@ -179,7 +179,7 @@ export default function OrderList() {
 
     data.map((d: { created: Date; total: string }) => {
       const comparedDate = new Date(d.created).getTime()
-      if (comparedDate > (fromDate !== undefined && fromDate) && comparedDate < (toDate !== undefined && toDate)) {
+      if (comparedDate > (fromDate !== undefined ? fromDate : comparedDate) && comparedDate < (toDate !== undefined ? toDate : comparedDate)) {
         number += parseInt(d?.total);
       }
     });
