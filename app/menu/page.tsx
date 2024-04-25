@@ -304,7 +304,7 @@ export default function menu() {
                           </Select>
                         </FormItem>
                         <FormItem>
-                          <Label>gambar</Label>
+                          <Label>gambar (maks 5 MB)</Label>
                           <Input
                             type="file"
                             accept=".jpg,.jpeg,.png"
@@ -399,7 +399,7 @@ export default function menu() {
                   </Select>
                 </FormItem>
                 <FormItem>
-                  <Label>gambar</Label>
+                  <Label>gambar (maks 5 MB)</Label>
                   <Input
                     type="file"
                     accept=".jpg,.jpeg,.png"
