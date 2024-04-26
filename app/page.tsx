@@ -205,21 +205,48 @@ const GuestPage = () => {
   return (
     <div className="bg-muted w-screen overflow-hidden">
       <div className="bg-primary h-screen grid md:grid-cols-2">
-        <div className="grid w-full place-content-center text-background gap-4 p-8 md:p-20">
-          <p className="text-2xl md:text-4xl xl:text-7xl font-extrabold">Large Text</p>
-          <p className="text-sm xl:text-lg">
-            small Lorem ipsum dolor, sit amet consectetur adipisicing elit. Qui
-            quidem fugiat harum consectetur excepturi, deserunt, sed nulla quis
-            eaque, assumenda animi dignissimos impedit commodi repudiandae
-            alias? Porro, enim. Eveniet, enim!
-          </p>
+        <div className="grid w-full place-content-center text-background gap-4 p-8 md:p-20"
+        >
+          <motion.p className="text-2xl md:text-4xl xl:text-7xl font-extrabold uppercase"
+          initial={{ opacity: 0, y: 100}}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          >
+            Selamat Datang di Dunia Rasa Cafe <span className="text-slate-400">Bisa Ngopi</span>
+          </motion.p>
+          <motion.p className="text-sm text-primary-foreground/80 xl:text-lg capitalize"
+          initial={{ opacity: 0, y: 200}}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}>
+            Temukan favorit Anda dari biji kopi pilihan terbaik kami. kopi kualitas terbaik dengan harga terjangkau
+          </motion.p>
+          <motion.div
+          className="w-full md:w-fit"
+          initial={{ opacity: 0, y: 300}}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}>
+          <Button
+            onClick={() =>
+              window.scrollTo({ top: screen.height, behavior: "smooth" })
+            }
+            className="bg-muted/20 border border-muted/50 w-full mt-4 hover:border-muted/30 hover:bg-muted/10"
+          >
+            Jelajahi Menu
+          </Button>
+          </motion.div>
         </div>
-        <div
-        style={{backgroundImage:`url('./kopi.png')`}}
-        className='bg-center bg-contain bg-no-repeat mb-20 md:mb-0 xl:size-1/2 xl:place-self-center'></div>
+        <motion.div
+        initial={{ opacity: 0, x: 100}}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1 }}
+          style={{ backgroundImage: `url('./kopi.png')` }}
+          className="bg-center bg-contain bg-no-repeat mb-20 md:mb-0 xl:size-1/2 xl:place-self-center"
+        ></motion.div>
       </div>
       <main className="md:py-40 p-8 bg-background md:px-20 lg:px-40 2xl:px-80 w-full overflow-x-hidden grid gap-8">
-        <p className="text-lg md:text-3xl 2xl:text-5xl font-semibold">Menu unggulan</p>
+        <p className="text-lg md:text-3xl 2xl:text-5xl font-semibold">
+          Menu unggulan
+        </p>
         <Carousel plugins={[plugin.current]} className="w-full">
           <CarouselContent>
             {loading ? (
@@ -235,7 +262,7 @@ const GuestPage = () => {
                     <Card>
                       <motion.div
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                        whileInView={{ opacity: 1 }}
                         transition={{ duration: 1 }}
                         style={{
                           backgroundImage: `url('${config.db}api/files/${m.collectionId}/${m.id}/${m.foto}?')`,
@@ -258,7 +285,9 @@ const GuestPage = () => {
             )}
           </CarouselContent>
         </Carousel>
-        <p className="text-lg md:text-3xl 2xl:text-5xl font-semibold">Makanan</p>
+        <p className="text-lg md:text-3xl 2xl:text-5xl font-semibold">
+          Makanan
+        </p>
         <div className="flex flex-row w-full overflow-x-scroll md:overflow-x-hidden md:grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 md:grid-rows-1 overflow-y-hidden gap-4">
           {loading ? (
             <CardSkeleton />
@@ -267,7 +296,7 @@ const GuestPage = () => {
               <motion.div
                 className="flex-1 min-w-full"
                 initial={{ opacity: 0, x: 100 + 100 * index }}
-                animate={{ opacity: 1, x: 0 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1 }}
               >
                 <Card className="flex-1 min-w-full">
@@ -288,7 +317,9 @@ const GuestPage = () => {
             ))
           )}
         </div>
-        <p className="text-lg md:text-3xl 2xl:text-5xl font-semibold">Minuman</p>
+        <p className="text-lg md:text-3xl 2xl:text-5xl font-semibold">
+          Minuman
+        </p>
         <div className="flex flex-row w-full overflow-x-scroll md:overflow-x-hidden md:grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 md:grid-rows-1 overflow-y-hidden gap-4">
           {loading ? (
             <CardSkeleton />
@@ -297,7 +328,7 @@ const GuestPage = () => {
               <motion.div
                 className="flex-1 min-w-full"
                 initial={{ opacity: 0, x: 100 + 100 * index }}
-                animate={{ opacity: 1, x: 0 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1 }}
               >
                 <Card className="flex-1 min-w-full">
@@ -334,35 +365,39 @@ const GuestPage = () => {
           <div className="">
             <p className="text-lg mb-8 font-semibold">Kontak Kami</p>
             <div className="grid gap-4 content-center">
-            <div className="flex gap-2">
-              <Mail />
-              <span>bisangopi@gmail.com</span>
-            </div>
-            <div className="flex gap-2">
-              <PhoneCall />
-              <span>0812-3456-7890</span>
-            </div>
-            <div className="mt-4 flex gap-4">
-              <a href="https://www.facebook.com">
-                <Facebook className="bg-blue-800 p-2 size-10 rounded-lg" />
-              </a>
-              <a href="https://www.instagram.com">
-                <Instagram className="bg-gradient-to-b from-purple-500 to-red-500 p-2 size-10 rounded-lg" />
-              </a>
-              <a href="https://www.linkedin.com">
-                <LinkedinIcon className="bg-white text-blue-500 p-2 size-10 rounded-lg" />
-              </a>
-              <a href="https://www.twitter.com">
-                <Twitter className="bg-blue-500 p-2 size-10 rounded-lg" />
-              </a>
-            </div>
+              <div className="flex gap-2">
+                <Mail />
+                <span>bisangopi@gmail.com</span>
+              </div>
+              <div className="flex gap-2">
+                <PhoneCall />
+                <span>0812-3456-7890</span>
+              </div>
+              <div className="mt-4 flex gap-4">
+                <a href="https://www.facebook.com">
+                  <Facebook className="bg-blue-800 p-2 size-10 rounded-lg" />
+                </a>
+                <a href="https://www.instagram.com">
+                  <Instagram className="bg-gradient-to-b from-purple-500 to-red-500 p-2 size-10 rounded-lg" />
+                </a>
+                <a href="https://www.linkedin.com">
+                  <LinkedinIcon className="bg-white text-blue-500 p-2 size-10 rounded-lg" />
+                </a>
+                <a href="https://www.twitter.com">
+                  <Twitter className="bg-blue-500 p-2 size-10 rounded-lg" />
+                </a>
+              </div>
             </div>
           </div>
           <div>
             <p className=" font-semibold text-lg mb-8">Navigasi</p>
             <ul className=" leading-10">
-              <li><a href="/login">anda staff? klik disini</a></li>
-              <li><a href="/feedback">punya saran? klik disini</a></li>
+              <li>
+                <a href="/login">anda staff? klik disini</a>
+              </li>
+              <li>
+                <a href="/feedback">punya saran? klik disini</a>
+              </li>
             </ul>
           </div>
         </div>
