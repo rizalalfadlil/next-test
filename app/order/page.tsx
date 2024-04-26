@@ -314,13 +314,13 @@ function Laporan({
   return (
     <>
       <p className="mt-8">Laporan Pendapatan</p>
-      <div className="flex gap-4">
+      <div className="flex md:gap-4 py-4 flex-col md:flex-row">
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant={"outline"}
               className={cn(
-                "w-[280px] justify-start text-left my-4 font-normal",
+                "w-full justify-start text-left my-4 font-normal",
                 !tglLaporan && "text-muted-foreground"
               )}
             >
@@ -345,7 +345,7 @@ function Laporan({
         </Popover>
         <Drawer>
           <DrawerTrigger>
-            <Button>tampilan cetak</Button>
+            <Button className="w-full">tampilan cetak</Button>
           </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader>

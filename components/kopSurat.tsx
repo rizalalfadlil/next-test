@@ -12,7 +12,7 @@ export default function KopSurat() {
         ></div>
         <div>
           <p className="text-4xl text-nowrap font-bold">Bisa Ngopi</p>
-          <p className="mt-1 hidden md:block">Jl. Cigending No.3, Cigending, Kec. Ujung Berung, Kota Bandung, Jawa Barat 40611</p>
+          <p className="mt-1">Jl. Cigending No.3, Cigending, Kec. Ujung Berung, Kota Bandung, Jawa Barat 40611</p>
         </div>
       </div>
       <hr className="border-2 border-primary my-4" />
